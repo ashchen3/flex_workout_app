@@ -65,11 +65,11 @@ struct LoginView: View {
                         .cornerRadius(8)
                 }
                 
-                NavigationLink(destination: RegisterView()) {
-                    Text("Create Account")
-                        .font(.system(size: 14))
-                        .foregroundColor(.cyan)
-                }
+                NavigationLink(destination: RegisterView(loginIsAuthenticated: $viewModel.isAuthenticated)) {
+                                    Text("Create Account")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.cyan)
+                                }
 
                 
             }
@@ -82,6 +82,8 @@ struct LoginView: View {
             
 }
 
-#Preview {
-    LoginView()
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+    }
 }

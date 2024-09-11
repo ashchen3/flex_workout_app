@@ -22,6 +22,8 @@ class LoginViewModel: ObservableObject {
         }
         
         Auth.auth().signIn(withEmail: email, password: password)
+        
+        self.isAuthenticated = true
     }
     
     func continueAsGuest() {
