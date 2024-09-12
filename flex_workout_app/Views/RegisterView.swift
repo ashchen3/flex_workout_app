@@ -76,10 +76,10 @@ struct RegisterView: View {
             .padding()
         }
         .onAppear {
-                    viewModel.onSuccessfulRegistration = {
-                        loginIsAuthenticated = true
-                    }
+            viewModel.onSuccessfulRegistration = {
+                loginIsAuthenticated = true
                 }
+            }
     }
 }
 

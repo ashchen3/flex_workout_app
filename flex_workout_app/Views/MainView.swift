@@ -20,7 +20,7 @@ struct MainView: View {
     @ViewBuilder
     var accountView: some View {
         TabView {
-            HomeView()
+            HomeView(workouts: WorkoutTemplate.sampleWorkoutTemplates)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }

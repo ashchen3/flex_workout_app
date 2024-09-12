@@ -10,16 +10,34 @@ import SwiftUI
 
 struct HomeView: View {
     //@StateObject var viewModel: HomeViewModel
-
-
+    //static var workouts = Workout.sampleData //temp var
+    let workouts: [WorkoutTemplate]
     
     var body: some View {
-        Text("Home View!")
+        VStack {
+            Text("Flex")
+                .font(.title)
+                .fontWeight(.bold)
+                .italic()
+                .foregroundColor(.cyan)
+            
+            List(workouts) { workout in
+                WorkoutCardView(workout: workout, isTopCard: workout.id == workouts.first?.id)
+            }
+            .listStyle(PlainListStyle())
+               
+        }
     }
-    
     
 }
 
-#Preview {
-    HomeView()
+//#Preview {
+//    HomeView()
+//}
+
+
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView(workouts: WorkoutTemplate.sampleWorkoutTemplates)
+    }
 }
