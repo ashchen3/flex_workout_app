@@ -9,7 +9,7 @@ import Foundation
 
 // Users -> ExerciseType -> Squat
 struct ExerciseType: Codable, Identifiable {
-    var id: UUID
+    var id: String
     var title: String
     var defaultSets: Int
     var defaultReps: Int
@@ -19,8 +19,8 @@ struct ExerciseType: Codable, Identifiable {
     var deload: Float
     var deloadFreq: Int
     
-    init(id: UUID = UUID(), title: String, defaultSets: Int = 5, defaultReps: Int = 5, defaultWeight: Float = 45, increment: Float = 5, incrementFreq: Int = 1, deload: Float = 0.10, deloadFreq: Int = 3) {
-        self.id = id
+    init(id: String = UUID().uuidString, title: String, defaultSets: Int = 5, defaultReps: Int = 5, defaultWeight: Float = 45, increment: Float = 5, incrementFreq: Int = 1, deload: Float = 0.10, deloadFreq: Int = 3) {
+        self.id = id  //If not filled, will create a UUID string. If filled, the id will be that created (by Firebase)
         self.title = title
         self.defaultSets = defaultSets
         self.defaultReps = defaultReps
@@ -97,11 +97,11 @@ extension ExerciseType {
 
 // Users -> WorkoutTemplate -> Push Day
 struct WorkoutTemplate: Codable, Identifiable {
-    var id: UUID
+    var id: String
     var title: String
     var exerciseTypes: [ExerciseType]
     
-    init(id: UUID = UUID(), title: String, exerciseTypes: [ExerciseType]) {
+    init(id: String = UUID().uuidString, title: String, exerciseTypes: [ExerciseType]) {
         self.id = id
         self.title = title
         self.exerciseTypes = exerciseTypes
@@ -127,11 +127,11 @@ extension WorkoutTemplate {
 
 // Users -> ProgramTemplate -> Push-Pull-Legs
 struct ProgramTemplate: Codable, Identifiable {
-    var id: UUID
+    var id: String
     var title: String
     var workoutTemplates: [WorkoutTemplate]
     
-    init(id: UUID = UUID(), title: String, workoutTemplates: [WorkoutTemplate]) {
+    init(id: String = UUID().uuidString, title: String, workoutTemplates: [WorkoutTemplate]) {
         self.id = id
         self.title = title
         self.workoutTemplates = workoutTemplates
@@ -148,27 +148,39 @@ extension ProgramTemplate {
     ]
 }
 
+struct WorkoutQueue: Codable {
+    var selectedProgram: ProgramTemplate
+    var nextWorkouts: [WorkoutTemplate]
+    var currentIndex: Int // Tracks which workout is currently at the front of the queue
 
+    init(selectedProgram: ProgramTemplate, nextWorkouts: [WorkoutTemplate], currentIndex: Int = 0) {
+        self.selectedProgram = selectedProgram
+        self.nextWorkouts = Array(selectedProgram.workoutTemplates.prefix(3)) //loop through selectedProgram.workoutTemplates
+        //default behavior should to be increase weight every time an excercise is displayed
+        //if FAILED is called, then the same workout template that was failed replaces the earliest instance of that same workoutType
+        self.currentIndex = currentIndex
+    }
+}
 
 
 
 // Users -> CompletedWorkout -> Workout_ID
 struct CompletedWorkout: Codable, Identifiable {
-    var id: UUID
-    var workoutTemplateId: UUID
+    var id: String
+    var workoutTemplateId: String
     var exercises: [Exercise]
 }
 
 
 struct Exercise: Codable, Identifiable {
-    var id: UUID
+    var id: String
     var title: String
     var sets: Int
     var reps: Int
     var weight: Float
     
     
-    init(id: UUID = UUID(), title: String, sets: Int, reps: Int, weight: Float) {
+    init(id: String = UUID().uuidString, title: String, sets: Int, reps: Int, weight: Float) {
         self.id = id
         self.title = title
         self.sets = sets

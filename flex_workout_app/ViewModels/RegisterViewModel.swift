@@ -41,6 +41,7 @@ class RegisterViewModel: ObservableObject {
             
             self.insertUserRecord(id: userId)
             self.isAuthenticated = true
+            
             self.onSuccessfulRegistration?()
         }
     }
@@ -55,7 +56,15 @@ class RegisterViewModel: ObservableObject {
         
         db.collection("users")
             .document(id)
-            .setData(newUser.asDictionary())
+            .setData(newUser.asDictionary()) { error in
+                        if let error = error {
+                            print("Error writing user to Firestore: \(error.localizedDescription)")
+                        } else {
+                            print("User added successfully to Firestore.")
+                        }
+                    }
+        
+        addDefaultTemplates(userId: id)
     }
     
     private func validate() -> Bool {

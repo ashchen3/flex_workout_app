@@ -9,9 +9,18 @@ import FirebaseFirestore
 import SwiftUI
 
 struct HomeView: View {
-    //@StateObject var viewModel: HomeViewModel
+    @StateObject var viewModel: HomeViewModel
     //static var workouts = Workout.sampleData //temp var
-    let workouts: [WorkoutTemplate]
+    //let workouts: [WorkoutTemplate]
+    
+    
+    //@FirestoreQuery var workoutQueue: next three workouts
+    
+    init(userId: String) {
+        self._viewModel = StateObject(
+            wrappedValue: HomeViewModel(userId: userId)
+        )
+    }
     
     var body: some View {
         VStack {
@@ -21,10 +30,10 @@ struct HomeView: View {
                 .italic()
                 .foregroundColor(.cyan)
             
-            List(workouts) { workout in
-                WorkoutCardView(workout: workout, isTopCard: workout.id == workouts.first?.id)
-            }
-            .listStyle(PlainListStyle())
+//            List(workouts) { workout in
+//                WorkoutCardView(workout: workout, isTopCard: workout.id == workouts.first?.id)
+//            }
+//            .listStyle(PlainListStyle())
                
         }
     }
@@ -38,6 +47,6 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView(workouts: WorkoutTemplate.sampleWorkoutTemplates)
+        HomeView(userId: "LhvfJa6jNqegPQbsQRFmraO7Env2")
     }
 }
