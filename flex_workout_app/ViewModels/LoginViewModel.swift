@@ -52,7 +52,9 @@ class LoginViewModel: ObservableObject {
         let newUser = User(id: id,
                            name: nil,     // No name for anonymous users
                            email: nil,    // No email for anonymous users
-                           joined: Date().timeIntervalSince1970)
+                           joined: Date().timeIntervalSince1970,
+                           selectedProgram: nil
+        )
         
         let db = Firestore.firestore()
         

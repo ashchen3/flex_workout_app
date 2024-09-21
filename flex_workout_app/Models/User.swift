@@ -12,4 +12,6 @@ struct User: Codable {
     let name: String?
     let email: String?
     let joined: TimeInterval
+    let selectedProgram: String? //selectedPlan is currently only house in Firebase, and not in this var
 }
+

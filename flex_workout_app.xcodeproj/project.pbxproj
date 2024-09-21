@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD7654572C97497D00FA8D93 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7654562C97497D00FA8D93 /* ProfileViewModel.swift */; };
+		BD7760802C9910E00086CF16 /* WorkoutQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD77607F2C9910E00086CF16 /* WorkoutQueue.swift */; };
 		BD923AEC2C91EF41003C3796 /* flex_workout_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923AEB2C91EF41003C3796 /* flex_workout_appApp.swift */; };
 		BD923AEE2C91EF41003C3796 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923AED2C91EF41003C3796 /* MainView.swift */; };
 		BD923AF02C91EF42003C3796 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD923AEF2C91EF42003C3796 /* Assets.xcassets */; };
@@ -52,9 +54,12 @@
 		BD923B592C93691E003C3796 /* SingleExerciseRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B582C93691E003C3796 /* SingleExerciseRowViewModel.swift */; };
 		BD923B612C93853D003C3796 /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B602C93853D003C3796 /* DataTypes.swift */; };
 		BD923B632C938E1B003C3796 /* DefaultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B622C938E1B003C3796 /* DefaultData.swift */; };
+		BDF3DC6A2C94BCB700CA7919 /* SelectPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3DC692C94BCB700CA7919 /* SelectPlanView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BD7654562C97497D00FA8D93 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		BD77607F2C9910E00086CF16 /* WorkoutQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutQueue.swift; sourceTree = "<group>"; };
 		BD923AE82C91EF41003C3796 /* flex_workout_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flex_workout_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD923AEB2C91EF41003C3796 /* flex_workout_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flex_workout_appApp.swift; sourceTree = "<group>"; };
 		BD923AED2C91EF41003C3796 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -78,6 +83,7 @@
 		BD923B582C93691E003C3796 /* SingleExerciseRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleExerciseRowViewModel.swift; sourceTree = "<group>"; };
 		BD923B602C93853D003C3796 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
 		BD923B622C938E1B003C3796 /* DefaultData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultData.swift; sourceTree = "<group>"; };
+		BDF3DC692C94BCB700CA7919 /* SelectPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPlanView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +162,7 @@
 				BD923B3A2C9225F7003C3796 /* User.swift */,
 				BD923B602C93853D003C3796 /* DataTypes.swift */,
 				BD923B622C938E1B003C3796 /* DefaultData.swift */,
+				BD77607F2C9910E00086CF16 /* WorkoutQueue.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -169,6 +176,7 @@
 				BD923B4A2C922F36003C3796 /* RegisterViewModel.swift */,
 				BD923B542C9262BB003C3796 /* InWorkoutViewModel.swift */,
 				BD923B582C93691E003C3796 /* SingleExerciseRowViewModel.swift */,
+				BD7654562C97497D00FA8D93 /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -184,6 +192,7 @@
 				BD923B502C9254AA003C3796 /* WorkoutCardView.swift */,
 				BD923B522C9262AE003C3796 /* InWorkoutView.swift */,
 				BD923B562C936914003C3796 /* SingleExerciseRowView.swift */,
+				BDF3DC692C94BCB700CA7919 /* SelectPlanView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -299,10 +308,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD923B492C922F2F003C3796 /* RegisterView.swift in Sources */,
+				BDF3DC6A2C94BCB700CA7919 /* SelectPlanView.swift in Sources */,
 				BD923AEE2C91EF41003C3796 /* MainView.swift in Sources */,
 				BD923B512C9254AA003C3796 /* WorkoutCardView.swift in Sources */,
 				BD923B3F2C9226BE003C3796 /* HomeViewModel.swift in Sources */,
 				BD923B3B2C9225F7003C3796 /* User.swift in Sources */,
+				BD7654572C97497D00FA8D93 /* ProfileViewModel.swift in Sources */,
 				BD923B392C9222F7003C3796 /* HomeView.swift in Sources */,
 				BD923AEC2C91EF41003C3796 /* flex_workout_appApp.swift in Sources */,
 				BD923B412C9226D8003C3796 /* ProfileView.swift in Sources */,
@@ -315,6 +326,7 @@
 				BD923B472C9228B0003C3796 /* Helper.swift in Sources */,
 				BD923B3D2C922667003C3796 /* MainViewModel.swift in Sources */,
 				BD923B452C922886003C3796 /* LoginViewModel.swift in Sources */,
+				BD7760802C9910E00086CF16 /* WorkoutQueue.swift in Sources */,
 				BD923B592C93691E003C3796 /* SingleExerciseRowViewModel.swift in Sources */,
 				BD923B612C93853D003C3796 /* DataTypes.swift in Sources */,
 			);

@@ -9,16 +9,21 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var viewModel = MainViewModel()
+    
     var body: some View {
         if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
-            accountView
+            if let selectedProgramId = viewModel.selectedProgramId {
+                accountView(selectedProgramId: selectedProgramId)
+            } else {
+                SelectPlanView(viewModel: viewModel)
+            }
         } else {
             LoginView()
         }
     }
     
     @ViewBuilder
-    var accountView: some View {
+    func accountView(selectedProgramId: String) -> some View {
         TabView {
             HomeView(userId: viewModel.currentUserId)
                 .tabItem {

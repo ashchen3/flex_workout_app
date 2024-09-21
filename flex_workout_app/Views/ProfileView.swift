@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @StateObject var viewModel = ProfileViewModel()
+    
     var body: some View {
-        Text("Profile View")
+        VStack {
+            Text("Profile View")
+            
+            Button("Log Out") {
+                viewModel.logout()
+            }
+            .tint(.red)
+            .padding()
+        }
+        
     }
 }
 
