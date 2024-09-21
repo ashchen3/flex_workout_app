@@ -45,6 +45,7 @@ struct SingleExerciseRowView: View {
                     }
                 }
                 .padding(.vertical, 4)
+                .frame(maxWidth: .infinity)
             }
         }
         .padding(.vertical, 8)

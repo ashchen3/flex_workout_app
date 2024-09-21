@@ -8,13 +8,25 @@
 import SwiftUI
 
 struct InWorkoutView: View {
+    //@StateObject var viewModel: InWorkoutViewModel
     
+    let workout: WorkoutTemplate
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text(workout.title)
+                .bold()
+                .font(.title2)
+            // Add more details about the workout here
+            List(workout.exerciseTypes) { exercise in SingleExerciseRowView(exercise: exercise)
+            }
+            .listStyle(PlainListStyle())
+        }
+        
+            
     }
 }
 
 #Preview {
-    InWorkoutView()
+    InWorkoutView(workout: WorkoutTemplate.sampleWorkoutTemplates[0])
 }

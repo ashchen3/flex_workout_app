@@ -10,13 +10,8 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel: HomeViewModel
-    static var workouts = WorkoutTemplate.sampleWorkoutTemplates //temp var
     let workouts: [WorkoutTemplate]
-    
-    
-    //based on selectedTemplate, show workouts
-    
-    //@FirestoreQuery var workoutQueue: next three workouts
+
     
     init(userId: String, workouts: [WorkoutTemplate] = WorkoutTemplate.sampleWorkoutTemplates) {
         self._viewModel = StateObject(
@@ -26,19 +21,23 @@ struct HomeView: View {
     }
     
     var body: some View {
-        VStack {
-            Text("Flex")
-                .font(.title)
-                .fontWeight(.bold)
-                .italic()
-                .foregroundColor(.cyan)
-            
-            List(workouts) { workout in
-                WorkoutCardView(workout: workout, isTopCard: workout.id == workouts.first?.id)
+        NavigationView {
+            VStack {
+                Text("Flex")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .italic()
+                    .foregroundColor(.cyan)
+                
+                List(workouts) { workout in
+                    NavigationLink(destination: InWorkoutView(workout: workout)) {
+                            WorkoutCardView(workout: workout, isTopCard: workout.id == workouts.first?.id)
+                    }
+                }
+                .listStyle(PlainListStyle())
             }
-            .listStyle(PlainListStyle())
-               
         }
+        
     }
     
 }

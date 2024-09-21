@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class HomeViewModel: ObservableObject {
+class HomeViewModel: ObservableObject {    
     private let userId: String
     //private let selectedProgramId: String
     

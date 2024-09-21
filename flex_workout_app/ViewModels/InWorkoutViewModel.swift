@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+
+class InWorkoutViewModel: ObservableObject {
+    @Published var showingExerciseData = false
+
+    init() {}
+    
+}

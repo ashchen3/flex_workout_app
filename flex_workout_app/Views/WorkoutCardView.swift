@@ -10,8 +10,10 @@ import SwiftUI
 struct WorkoutCardView: View {
     let workout: WorkoutTemplate
     let isTopCard: Bool
+    //let action: () -> Void
     
     var body: some View {
+        
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(workout.title)
@@ -44,6 +46,8 @@ struct WorkoutCardView: View {
                         .padding(.leading, -10)  // Ensure it's flush with the left edge
                     : nil, alignment: .leading  // Align the overlay to the left
                 )
+        
+        
     }
     
     private func formattedDate(_ timeInterval: TimeInterval) -> String {
@@ -58,9 +62,8 @@ struct WorkoutCardView_Previews: PreviewProvider {
     static var workout = WorkoutTemplate.sampleWorkoutTemplates[0]
     static var previews: some View {
         WorkoutCardView(workout: workout, isTopCard: true)
-            //.previewLayout(.fixed(width: 400, height: 200))
-            .previewLayout(.sizeThatFits)
-            .padding()
+        .previewLayout(.sizeThatFits)
+        .padding()
 
     }
 }
