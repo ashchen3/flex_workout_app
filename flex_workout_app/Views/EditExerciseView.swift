@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct EditExerciseView: View {
+    let exercise: ExerciseType
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Edit \(exercise.title)")
     }
 }
 
 #Preview {
-    EditExerciseView()
+    EditExerciseView(exercise: ExerciseType(
+        title: "Squat",
+        defaultSets: 5,
+        defaultReps: 5,
+        defaultWeight: 190
+    ))
 }

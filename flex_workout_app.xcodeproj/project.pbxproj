@@ -54,6 +54,15 @@
 		BD923B592C93691E003C3796 /* SingleExerciseRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B582C93691E003C3796 /* SingleExerciseRowViewModel.swift */; };
 		BD923B612C93853D003C3796 /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B602C93853D003C3796 /* DataTypes.swift */; };
 		BD923B632C938E1B003C3796 /* DefaultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B622C938E1B003C3796 /* DefaultData.swift */; };
+		BD94158D2C9F7581003C5045 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = BD94158C2C9F7581003C5045 /* Auth */; };
+		BD94158F2C9F7581003C5045 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = BD94158E2C9F7581003C5045 /* Functions */; };
+		BD9415912C9F7581003C5045 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = BD9415902C9F7581003C5045 /* PostgREST */; };
+		BD9415932C9F7581003C5045 /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = BD9415922C9F7581003C5045 /* Realtime */; };
+		BD9415952C9F7581003C5045 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = BD9415942C9F7581003C5045 /* Storage */; };
+		BD9415972C9F7D38003C5045 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9415962C9F7D38003C5045 /* Secrets.swift */; };
+		BDCE52752C9E845900EFC859 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE52742C9E845900EFC859 /* EditExerciseView.swift */; };
+		BDCE52772C9E846200EFC859 /* EditExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE52762C9E846200EFC859 /* EditExerciseViewModel.swift */; };
+		BDF064512CA0EEF200EFEF72 /* TableStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF064502CA0EEF200EFEF72 /* TableStructs.swift */; };
 		BDF3DC6A2C94BCB700CA7919 /* SelectPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3DC692C94BCB700CA7919 /* SelectPlanView.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +92,10 @@
 		BD923B582C93691E003C3796 /* SingleExerciseRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleExerciseRowViewModel.swift; sourceTree = "<group>"; };
 		BD923B602C93853D003C3796 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
 		BD923B622C938E1B003C3796 /* DefaultData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultData.swift; sourceTree = "<group>"; };
+		BD9415962C9F7D38003C5045 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		BDCE52742C9E845900EFC859 /* EditExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseView.swift; sourceTree = "<group>"; };
+		BDCE52762C9E846200EFC859 /* EditExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseViewModel.swift; sourceTree = "<group>"; };
+		BDF064502CA0EEF200EFEF72 /* TableStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableStructs.swift; sourceTree = "<group>"; };
 		BDF3DC692C94BCB700CA7919 /* SelectPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPlanView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,15 +109,20 @@
 				BD923B272C921C41003C3796 /* FirebaseMLModelDownloader in Frameworks */,
 				BD923B0D2C921C41003C3796 /* FirebaseAppCheck in Frameworks */,
 				BD923B112C921C41003C3796 /* FirebaseAuth in Frameworks */,
+				BD94158F2C9F7581003C5045 /* Functions in Frameworks */,
+				BD9415912C9F7581003C5045 /* PostgREST in Frameworks */,
 				BD923B072C921C41003C3796 /* FirebaseAnalytics in Frameworks */,
 				BD923B0F2C921C41003C3796 /* FirebaseAppDistribution-Beta in Frameworks */,
+				BD9415932C9F7581003C5045 /* Realtime in Frameworks */,
 				BD923B0B2C921C41003C3796 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				BD923B152C921C41003C3796 /* FirebaseCrashlytics in Frameworks */,
 				BD923B172C921C41003C3796 /* FirebaseDatabase in Frameworks */,
 				BD923B212C921C41003C3796 /* FirebaseFunctionsCombine-Community in Frameworks */,
 				BD923B132C921C41003C3796 /* FirebaseAuthCombine-Community in Frameworks */,
 				BD923B2F2C921C41003C3796 /* FirebaseStorage in Frameworks */,
+				BD9415952C9F7581003C5045 /* Storage in Frameworks */,
 				BD923B092C921C41003C3796 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				BD94158D2C9F7581003C5045 /* Auth in Frameworks */,
 				BD923B1F2C921C41003C3796 /* FirebaseFunctions in Frameworks */,
 				BD923B252C921C41003C3796 /* FirebaseInstallations in Frameworks */,
 				BD923B2B2C921C41003C3796 /* FirebasePerformance in Frameworks */,
@@ -163,6 +181,7 @@
 				BD923B602C93853D003C3796 /* DataTypes.swift */,
 				BD923B622C938E1B003C3796 /* DefaultData.swift */,
 				BD77607F2C9910E00086CF16 /* WorkoutQueue.swift */,
+				BDF064502CA0EEF200EFEF72 /* TableStructs.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -177,6 +196,7 @@
 				BD923B542C9262BB003C3796 /* InWorkoutViewModel.swift */,
 				BD923B582C93691E003C3796 /* SingleExerciseRowViewModel.swift */,
 				BD7654562C97497D00FA8D93 /* ProfileViewModel.swift */,
+				BDCE52762C9E846200EFC859 /* EditExerciseViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -193,6 +213,7 @@
 				BD923B522C9262AE003C3796 /* InWorkoutView.swift */,
 				BD923B562C936914003C3796 /* SingleExerciseRowView.swift */,
 				BDF3DC692C94BCB700CA7919 /* SelectPlanView.swift */,
+				BDCE52742C9E845900EFC859 /* EditExerciseView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -204,6 +225,7 @@
 				BD923AEB2C91EF41003C3796 /* flex_workout_appApp.swift */,
 				BD923AEF2C91EF42003C3796 /* Assets.xcassets */,
 				BD923B462C9228B0003C3796 /* Helper.swift */,
+				BD9415962C9F7D38003C5045 /* Secrets.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -248,6 +270,11 @@
 				BD923B2E2C921C41003C3796 /* FirebaseStorage */,
 				BD923B302C921C41003C3796 /* FirebaseStorageCombine-Community */,
 				BD923B322C921C41003C3796 /* FirebaseVertexAI-Preview */,
+				BD94158C2C9F7581003C5045 /* Auth */,
+				BD94158E2C9F7581003C5045 /* Functions */,
+				BD9415902C9F7581003C5045 /* PostgREST */,
+				BD9415922C9F7581003C5045 /* Realtime */,
+				BD9415942C9F7581003C5045 /* Storage */,
 			);
 			productName = flex_workout_app;
 			productReference = BD923AE82C91EF41003C3796 /* flex_workout_app.app */;
@@ -279,6 +306,7 @@
 			mainGroup = BD923ADF2C91EF41003C3796;
 			packageReferences = (
 				BD923B052C921C41003C3796 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				BD94158B2C9F7581003C5045 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 			);
 			productRefGroup = BD923AE92C91EF41003C3796 /* Products */;
 			projectDirPath = "";
@@ -315,16 +343,20 @@
 				BD923B3B2C9225F7003C3796 /* User.swift in Sources */,
 				BD7654572C97497D00FA8D93 /* ProfileViewModel.swift in Sources */,
 				BD923B392C9222F7003C3796 /* HomeView.swift in Sources */,
+				BDCE52772C9E846200EFC859 /* EditExerciseViewModel.swift in Sources */,
 				BD923AEC2C91EF41003C3796 /* flex_workout_appApp.swift in Sources */,
 				BD923B412C9226D8003C3796 /* ProfileView.swift in Sources */,
 				BD923B4B2C922F36003C3796 /* RegisterViewModel.swift in Sources */,
 				BD923B572C936914003C3796 /* SingleExerciseRowView.swift in Sources */,
+				BDF064512CA0EEF200EFEF72 /* TableStructs.swift in Sources */,
 				BD923B532C9262AE003C3796 /* InWorkoutView.swift in Sources */,
 				BD923B632C938E1B003C3796 /* DefaultData.swift in Sources */,
 				BD923B432C9226EE003C3796 /* LoginView.swift in Sources */,
+				BD9415972C9F7D38003C5045 /* Secrets.swift in Sources */,
 				BD923B552C9262BB003C3796 /* InWorkoutViewModel.swift in Sources */,
 				BD923B472C9228B0003C3796 /* Helper.swift in Sources */,
 				BD923B3D2C922667003C3796 /* MainViewModel.swift in Sources */,
+				BDCE52752C9E845900EFC859 /* EditExerciseView.swift in Sources */,
 				BD923B452C922886003C3796 /* LoginViewModel.swift in Sources */,
 				BD7760802C9910E00086CF16 /* WorkoutQueue.swift in Sources */,
 				BD923B592C93691E003C3796 /* SingleExerciseRowViewModel.swift in Sources */,
@@ -544,6 +576,14 @@
 				minimumVersion = 11.2.0;
 			};
 		};
+		BD94158B2C9F7581003C5045 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -661,6 +701,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BD923B052C921C41003C3796 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseVertexAI-Preview";
+		};
+		BD94158C2C9F7581003C5045 /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD94158B2C9F7581003C5045 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		BD94158E2C9F7581003C5045 /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD94158B2C9F7581003C5045 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		BD9415902C9F7581003C5045 /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD94158B2C9F7581003C5045 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		BD9415922C9F7581003C5045 /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD94158B2C9F7581003C5045 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		BD9415942C9F7581003C5045 /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD94158B2C9F7581003C5045 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
