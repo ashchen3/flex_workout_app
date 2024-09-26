@@ -6,14 +6,9 @@
 //
 
 import Foundation
-import FirebaseFirestore
 
-class HomeViewModel: ObservableObject {    
-    private let userId: String
-    //private let selectedProgramId: String
+class HomeViewModel: ObservableObject {
     
-    init(userId: String) {
-        self.userId = userId
-    }
+    init() { }
     
 }

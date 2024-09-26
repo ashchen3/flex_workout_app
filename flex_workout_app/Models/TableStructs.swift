@@ -17,7 +17,7 @@ struct RoutineHistory: Codable {
     let isCompleted: Bool
 }
 
-struct PersonProgramExerciseSets: Codable {
+struct PersonProgramExerciseSet: Codable {
     let id: Int
     let personProgramExerciseID: Int
     let setNumber: Int
@@ -26,7 +26,7 @@ struct PersonProgramExerciseSets: Codable {
     let isCompleted: Bool
 }
 
-struct PersonProgramExercises: Codable {
+struct PersonProgramExercise: Codable {
     let id: Int
     let created_at: Date
     let personProgramID: Int
@@ -36,45 +36,45 @@ struct PersonProgramExercises: Codable {
     let routineHistoryID: Int
 }
 
-struct PeoplePrograms: Codable {
+struct PeopleProgram: Codable {
     let id: Int
     let personID: UUID
     let programID: Int
 }
 
-struct ProgramRoutines: Codable {
+struct ProgramRoutine: Codable {
     let id: Int
     let programID: Int
     let routineID: Int
     let routineOrder: Int
 }
 
-struct People: Codable {
+struct Person: Codable {
     let id: UUID
     let created_at: Date
 }
 
-struct Programs: Codable {
+struct Program: Codable {
     let id: Int
     let programName: String
     let description: String?
 }
 
-struct Routines: Codable {
+struct Routine: Codable {
     let id: Int
     let created_at: Date
     let routineName: String
     let description: String?
 }
 
-struct RoutineExercises: Codable {
+struct RoutineExercise: Codable {
     let id: Int
     let routineID: Int
     let exerciseID: Int
     let sets: Int
 }
 
-struct Exercises: Codable {
+struct Exercise: Codable {
     let id: Int
     let exerciseName: String
     let description: String?

@@ -8,22 +8,24 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @StateObject var viewModel = ProfileViewModel()
+    @EnvironmentObject var mainViewModel: MainViewModel
     
     var body: some View {
         VStack {
             Text("Profile View")
             
             Button("Log Out") {
-                viewModel.logout()
+                mainViewModel.signOut()
             }
             .tint(.red)
             .padding()
         }
-        
     }
 }
 
-#Preview {
-    ProfileView()
+struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileView()
+            .environmentObject(MainViewModel())
+    }
 }

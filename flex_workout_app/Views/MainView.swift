@@ -7,32 +7,37 @@
 
 import SwiftUI
 
+
 struct MainView: View {
-    @StateObject var viewModel = MainViewModel()
+    @StateObject private var mainViewModel = MainViewModel()
+    @StateObject private var userState = UserState()
     
     var body: some View {
-        if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
-            if let selectedProgramId = viewModel.selectedProgramId {
-                accountView(selectedProgramId: selectedProgramId)
+        Group {
+            if mainViewModel.isAuthenticated {
+                TabView {
+                    HomeView()
+                        .tabItem {
+                            Label("Home", systemImage: "house")
+                        }
+                    ProgramTabView()
+                        .tabItem {
+                            Label("Program", systemImage: "chart.xyaxis.line")
+                        }
+                    ProfileView()
+                        .tabItem {
+                            Label("Profile", systemImage: "person.circle")
+                        }
+                }
             } else {
-                SelectPlanView(viewModel: viewModel)
+                LoginView()
             }
-        } else {
-            LoginView()
         }
-    }
-    
-    @ViewBuilder
-    func accountView(selectedProgramId: String) -> some View {
-        TabView {
-            HomeView(userId: viewModel.currentUserId)
-                .tabItem {
-                    Label("Home", systemImage: "house")
-                }
-            ProfileView()
-                .tabItem {
-                    Label("Profile", systemImage: "person.circle")
-                }
+        .environmentObject(mainViewModel)
+        .environmentObject(userState)
+        .onAppear {
+            mainViewModel.checkAuthenticationStatus()
+            userState.updateUserId()
         }
     }
 }

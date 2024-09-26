@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject var viewModel = LoginViewModel()
+    @StateObject var viewModel = AuthenticationViewModel()
     @State private var showLoginFields = false
+    @State private var showErrorBanner = false
+
     
     var body: some View {
         NavigationView {
@@ -26,27 +28,46 @@ struct LoginView: View {
                         .foregroundColor(.cyan)
                 }
                 
+                if showErrorBanner {
+                    Text(viewModel.errorMessage)
+                        .foregroundColor(.red)
+                        .font(.system(size: 14))
+                        .padding()
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(8)
+                        .transition(.move(edge: .top).combined(with: .opacity)) // Slide from top & fade
+                        .onAppear {
+                            // Dismiss the banner after 3 seconds
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                withAnimation {
+                                    showErrorBanner = false
+                                }
+                            }
+                        }
+                }
+                
                 if showLoginFields {
                     VStack(spacing: 10) {
                         TextField("Email", text: $viewModel.email)
-                                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                                .autocapitalization(.none)
-                                            
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .autocapitalization(.none)
+                            .keyboardType(.emailAddress)
+                        
                         SecureField("Password", text: $viewModel.password)
-                                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                 }
             
                 Button(action: {
                     if showLoginFields {
-                        viewModel.login()
+                        viewModel.signIn()
                     } else {
                         withAnimation {
                             showLoginFields.toggle()
                         }
                     }
                 }) {
-                    Text("Log in")
+                    Text(showLoginFields ? "Log in" : "Sign in with email")
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.cyan)
@@ -65,21 +86,21 @@ struct LoginView: View {
                         .cornerRadius(8)
                 }
                 
-                NavigationLink(destination: RegisterView(loginIsAuthenticated: $viewModel.isAuthenticated)) {
-                                    Text("Create Account")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.cyan)
-                                }
-
-                
+                NavigationLink(destination: RegisterView(viewModel: viewModel)) {
+                    Text("Create Account")
+                        .font(.system(size: 14))
+                        .foregroundColor(.cyan)
+                }
             }
             .padding()
             .fullScreenCover(isPresented: $viewModel.isAuthenticated) {
                 MainView()
             }
         }
+        .onAppear {
+            viewModel.checkAuthentication()
         }
-            
+    }
 }
 
 struct LoginView_Previews: PreviewProvider {
