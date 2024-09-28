@@ -8,11 +8,32 @@
 import SwiftUI
 
 struct SetsRepsView: View {
+    let workouts: [(String, [Exercise])] = [
+        ("Workout A", [
+            Exercise(id: 1, exerciseName: "Squat", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 130),
+            Exercise(id: 2, exerciseName: "Bench Press", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 75),
+            Exercise(id: 3, exerciseName: "Barbell Row", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 65)
+        ]),
+        ("Workout B", [
+            Exercise(id: 4, exerciseName: "Squat", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 135),
+            Exercise(id: 5, exerciseName: "Overhead Press", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 45),
+            Exercise(id: 6, exerciseName: "Deadlift", description: nil, defaultReps: 5, defaultSets: 1, defaultWeight: 145)
+        ])
+    ]
+    
     var body: some View {
-        Text("Sets x Reps View")
+        WorkoutView(workouts: workouts) { exercise in
+            ExerciseRow(exercise: exercise) { exercise in
+                Text("\(exercise.defaultSets)×\(exercise.defaultReps)")
+                    .foregroundColor(.primary)
+            }
+        }
     }
 }
 
-#Preview {
-    SetsRepsView()
+
+struct SetsRepsView_Previews: PreviewProvider {
+    static var previews: some View {
+        SetsRepsView()
+    }
 }

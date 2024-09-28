@@ -9,11 +9,16 @@ import SwiftUI
 
 struct WorkoutsView: View {
     var body: some View {
-        VStack(spacing: 20) {
-            WorkoutList()
-            ScheduleButton()
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    WorkoutList()
+                    ScheduleButton()
+                }
+                .padding()
+            }
+            
         }
-        .padding()
     }
 }
 
@@ -37,6 +42,7 @@ struct WorkoutList: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
         )
+        
     }
 }
 
