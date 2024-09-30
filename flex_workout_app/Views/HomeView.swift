@@ -17,27 +17,12 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .italic()
                     .foregroundColor(.cyan)
-                
-                
-                
-                
-                
-//                List(workouts) { workout in
-//                    NavigationLink(destination: InWorkoutView(workout: workout)) {
-//                            WorkoutCardView(workout: workout, isTopCard: workout.id == workouts.first?.id)
-//                    }
-//                }
-//                .listStyle(PlainListStyle())
             }
         }
         
     }
     
 }
-
-//#Preview {
-//    HomeView()
-//}
 
 
 struct HomeView_Previews: PreviewProvider {

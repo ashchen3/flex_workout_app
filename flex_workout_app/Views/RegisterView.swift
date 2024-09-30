@@ -10,6 +10,7 @@ import SwiftUI
 struct RegisterView: View {
     @ObservedObject var viewModel: AuthenticationViewModel
     @Environment(\.presentationMode) var presentationMode
+    @State private var showErrorBanner = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -29,12 +30,11 @@ struct RegisterView: View {
                     .fontWeight(.bold)
             }
             
+            if showErrorBanner {
+                ErrorBanner(message: viewModel.errorMessage, isPresented: $showErrorBanner)
+            }
+            
             VStack(spacing: 10) {
-                if !viewModel.errorMessage.isEmpty {
-                    Text(viewModel.errorMessage)
-                        .foregroundColor(.red)
-                        .font(.system(size: 14))
-                }
                 TextField("Name", text: $viewModel.name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.words)
@@ -53,6 +53,7 @@ struct RegisterView: View {
             
             Button(action: {
                 viewModel.signUp()
+                showErrorBanner = !viewModel.errorMessage.isEmpty
             }) {
                 Text("Sign Up")
                     .frame(maxWidth: .infinity)

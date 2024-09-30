@@ -27,7 +27,12 @@ class AuthenticationViewModel: ObservableObject {
         Task {
             do {
                 guard validateSignUp() else { return }
-                _ = try await supabase.auth.signUp(email: email, password: password)
+                
+                let userData: [String: AnyJSON] = [
+                    "name": .string(name) // Wrap 'name' in AnyJSON
+                ]
+                
+                _ = try await supabase.auth.signUp(email: email, password: password, data: userData)
                 await MainActor.run {
                     self.isAuthenticated = true
                     self.onSuccessfulRegistration?()
@@ -102,15 +107,16 @@ class AuthenticationViewModel: ObservableObject {
     
     private func validateSignIn() -> Bool {
         errorMessage = ""
-        guard !email.trimmingCharacters(in: .whitespaces).isEmpty,
-              !password.trimmingCharacters(in: .whitespaces).isEmpty else {
-            errorMessage = "*please enter your email and password"
-            
+        guard !email.trimmingCharacters(in: .whitespaces).isEmpty else {
+            errorMessage = "Please enter your email address."
             return false
         }
-        
+        guard !password.trimmingCharacters(in: .whitespaces).isEmpty else {
+            errorMessage = "Please enter your password."
+            return false
+        }
         guard Helper.validateEmail(enteredEmail: email) else {
-            errorMessage = "please enter valid email address"
+            errorMessage = "Please enter a valid email address."
             return false
         }
         return true
@@ -118,26 +124,30 @@ class AuthenticationViewModel: ObservableObject {
     
     private func validateSignUp() -> Bool {
         errorMessage = ""
-        guard !email.trimmingCharacters(in: .whitespaces).isEmpty,
-              !password.trimmingCharacters(in: .whitespaces).isEmpty
-        else {
-            errorMessage = "please fill out all fields"
-
+        guard !name.trimmingCharacters(in: .whitespaces).isEmpty else {
+            errorMessage = "Please enter your name."
+            return false
+        }
+        guard !email.trimmingCharacters(in: .whitespaces).isEmpty else {
+            errorMessage = "Please enter your email address."
+            return false
+        }
+        guard !password.trimmingCharacters(in: .whitespaces).isEmpty else {
+            errorMessage = "Please enter a password."
             return false
         }
         guard Helper.validateEmail(enteredEmail: email) else {
-            errorMessage = "please enter valid email address"
+            errorMessage = "Please enter a valid email address."
             return false
         }
         guard password.count >= 6 else {
-            errorMessage = "password must be 6 characters or more"
+            errorMessage = "Password must be at least 6 characters long."
             return false
         }
         guard password == confirmPassword else {
-            errorMessage = "passwords must match"
+            errorMessage = "Passwords do not match."
             return false
         }
-        
         return true
     }
     

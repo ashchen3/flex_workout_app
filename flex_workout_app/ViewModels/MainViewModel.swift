@@ -3,6 +3,18 @@
 import Foundation
 import Supabase
 
+struct Profile: Identifiable, Codable {
+    let id: UUID
+    let createdAt: Date
+    let name: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case createdAt = "created_at"
+        case name
+    }
+}
+
 class MainViewModel: ObservableObject {
     @Published var isAuthenticated = false
     

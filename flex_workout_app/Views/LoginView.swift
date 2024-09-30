@@ -29,21 +29,7 @@ struct LoginView: View {
                 }
                 
                 if showErrorBanner {
-                    Text(viewModel.errorMessage)
-                        .foregroundColor(.red)
-                        .font(.system(size: 14))
-                        .padding()
-                        .background(Color.red.opacity(0.1))
-                        .cornerRadius(8)
-                        .transition(.move(edge: .top).combined(with: .opacity)) // Slide from top & fade
-                        .onAppear {
-                            // Dismiss the banner after 3 seconds
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                withAnimation {
-                                    showErrorBanner = false
-                                }
-                            }
-                        }
+                    ErrorBanner(message: viewModel.errorMessage, isPresented: $showErrorBanner)
                 }
                 
                 if showLoginFields {
@@ -61,6 +47,7 @@ struct LoginView: View {
                 Button(action: {
                     if showLoginFields {
                         viewModel.signIn()
+                        showErrorBanner = !viewModel.errorMessage.isEmpty
                     } else {
                         withAnimation {
                             showLoginFields.toggle()

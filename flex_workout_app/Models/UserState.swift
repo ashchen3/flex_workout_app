@@ -10,6 +10,7 @@ import Supabase
 
 class UserState: ObservableObject {
     @Published var currentUserId: String = ""
+    @Published var profile: Profile?
     
     private let supabase = SupabaseClient(supabaseURL: Secrets.projectURL, supabaseKey: Secrets.apiKey)
     
@@ -20,9 +21,27 @@ class UserState: ObservableObject {
                 await MainActor.run {
                     self.currentUserId = user.id.uuidString
                 }
+                await fetchProfile()
             } catch {
                 print("Error updating user ID: \(error)")
             }
+        }
+    }
+    
+    @MainActor
+    func fetchProfile() async {
+        do {
+            let profile: Profile = try await supabase
+                .from("profiles")
+                .select()
+                .eq("id", value: UUID(uuidString: currentUserId))
+                .single()
+                .execute()
+                .value
+            
+            self.profile = profile
+        } catch {
+            print("Error fetching profile: \(error)")
         }
     }
 }
