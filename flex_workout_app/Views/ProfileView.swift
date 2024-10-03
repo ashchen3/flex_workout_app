@@ -37,7 +37,7 @@ struct ProfileView: View {
         .onAppear {
             if userState.profile == nil {
                 Task {
-                    await userState.fetchProfile()
+                    try await userState.fetchProfile()
                 }
             }
         }

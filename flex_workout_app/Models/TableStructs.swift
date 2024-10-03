@@ -7,6 +7,44 @@
 
 import Foundation
 
+struct Profile: Identifiable, Codable {
+    let id: UUID
+    let createdAt: Date
+    let name: String?
+    let email: String?
+    let selectedProgram: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case createdAt = "created_at"
+        case name
+        case email
+        case selectedProgram = "selected_program"
+    }
+}
+
+struct Program: Identifiable, Codable {
+    var id: Int?
+    var user_id: UUID
+    var programName: String
+    var createdAt: Date?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case user_id
+        case programName = "program_name"
+        case createdAt = "created_at"
+    }
+}
+
+
+
+
+///////////////////////////////////////////////////
+///THINGS IN USE ABOVE THIS LINE
+///////////////////////////////////////////////////
+
+
 struct RoutineHistory: Codable {
     let id: Int
     let personID: UUID
@@ -54,11 +92,7 @@ struct Person: Codable {
     let created_at: Date
 }
 
-struct Program: Codable {
-    let id: Int
-    let programName: String
-    let description: String?
-}
+
 
 struct Routine: Codable {
     let id: Int

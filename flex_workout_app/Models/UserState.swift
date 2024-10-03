@@ -9,39 +9,29 @@ import Foundation
 import Supabase
 
 class UserState: ObservableObject {
-    @Published var currentUserId: String = ""
+    @Published var currentUserId: UUID?
     @Published var profile: Profile?
     
     private let supabase = SupabaseClient(supabaseURL: Secrets.projectURL, supabaseKey: Secrets.apiKey)
     
-    func updateUserId() {
-        Task {
-            do {
-                let user = try await supabase.auth.session.user
-                await MainActor.run {
-                    self.currentUserId = user.id.uuidString
-                }
-                await fetchProfile()
-            } catch {
-                print("Error updating user ID: \(error)")
-            }
-        }
+    func updateUserId() async throws {
+        let user = try await supabase.auth.session.user
+
+        self.currentUserId = user.id
     }
     
     @MainActor
-    func fetchProfile() async {
-        do {
-            let profile: Profile = try await supabase
-                .from("profiles")
-                .select()
-                .eq("id", value: UUID(uuidString: currentUserId))
-                .single()
-                .execute()
-                .value
-            
-            self.profile = profile
-        } catch {
-            print("Error fetching profile: \(error)")
-        }
+    func fetchProfile() async throws {
+        let user = try await supabase.auth.session.user
+        
+        let profile: Profile = try await supabase
+            .from("profiles")
+            .select()
+            .eq("id", value: user.id)
+            .single()
+            .execute()
+            .value
+        
+        self.profile = profile
     }
 }

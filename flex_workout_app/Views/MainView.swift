@@ -37,7 +37,9 @@ struct MainView: View {
         .environmentObject(userState)
         .onAppear {
             mainViewModel.checkAuthenticationStatus()
-            userState.updateUserId()
+            Task {
+                try await userState.updateUserId()
+            }
         }
     }
 }
