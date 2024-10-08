@@ -8,26 +8,39 @@
 import SwiftUI
 
 struct SetsRepsView: View {
+    
+    @EnvironmentObject var userState: UserState
+
+    
     let workouts: [(String, [Exercise])] = [
         ("Workout A", [
-            Exercise(id: 1, exerciseName: "Squat", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 130),
-            Exercise(id: 2, exerciseName: "Bench Press", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 75),
-            Exercise(id: 3, exerciseName: "Barbell Row", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 65)
+            Exercise(id: 1, exerciseName: "Squat", defaultWeight: 130, defaultReps: 5, defaultSets: 5),
+            Exercise(id: 2, exerciseName: "Bench Press", defaultWeight: 75, defaultReps: 5, defaultSets: 5),
+            Exercise(id: 3, exerciseName: "Barbell Row", defaultWeight: 65, defaultReps: 5, defaultSets: 5)
         ]),
         ("Workout B", [
-            Exercise(id: 4, exerciseName: "Squat", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 135),
-            Exercise(id: 5, exerciseName: "Overhead Press", description: nil, defaultReps: 5, defaultSets: 5, defaultWeight: 45),
-            Exercise(id: 6, exerciseName: "Deadlift", description: nil, defaultReps: 5, defaultSets: 1, defaultWeight: 145)
+            Exercise(id: 4, exerciseName: "Squat", defaultWeight: 135, defaultReps: 5, defaultSets: 5),
+            Exercise(id: 5, exerciseName: "Overhead Press", defaultWeight: 45, defaultReps: 5, defaultSets: 5),
+            Exercise(id: 6, exerciseName: "Deadlift", defaultWeight: 145, defaultReps: 5, defaultSets: 1)
         ])
     ]
     
     var body: some View {
-        WorkoutView(workouts: workouts) { exercise in
-            ExerciseRow(exercise: exercise) { exercise in
-                Text("\(exercise.defaultSets)×\(exercise.defaultReps)")
-                    .foregroundColor(.primary)
+        VStack {
+            if let activeProgNum = userState.profile?.selectedProgram {
+                Text("\(activeProgNum)")
+            }
+            WorkoutView(workouts: workouts) { exercise in
+                ExerciseRow(exercise: exercise) { exercise in
+                    Text("\(exercise.defaultSets)×\(exercise.defaultReps)")
+                        .foregroundColor(.primary)
+                }
             }
         }
+        .task {
+            try? await userState.fetchProfile()
+        }
+        
     }
 }
 
@@ -35,5 +48,6 @@ struct SetsRepsView: View {
 struct SetsRepsView_Previews: PreviewProvider {
     static var previews: some View {
         SetsRepsView()
+            .environmentObject(UserState())
     }
 }

@@ -39,6 +39,7 @@ struct MainView: View {
             mainViewModel.checkAuthenticationStatus()
             Task {
                 try await userState.updateUserId()
+                try await userState.fetchProfile()
             }
         }
     }

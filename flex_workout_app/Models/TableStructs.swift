@@ -37,6 +37,49 @@ struct Program: Identifiable, Codable {
     }
 }
 
+struct Workout: Codable {
+    var id: Int? //To be populated by Supabase
+    var workoutName: String
+    var programId: Int
+    var user_id: UUID
+    var workoutOrder: Int? //also populated by Supabase? and/or iterated upon after creation
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case workoutName = "workout_name"
+        case programId = "program_id"
+        case user_id
+        case workoutOrder = "workout_order"
+    }
+}
+
+struct Exercise: Codable {
+    var id: Int? //To be populated by Supabase
+    var exerciseName: String
+    var defaultWeight: Double
+    var defaultReps: Int
+    var defaultSets: Int
+    var user_id: UUID?
+    var increment: Float?
+    var incrementFreq: Int?
+    var deload: Float?
+    var deloadFreq: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case exerciseName = "exercise_name"
+        case defaultWeight = "default_weight"
+        case defaultReps = "default_reps"
+        case defaultSets = "default_sets"
+        case user_id
+        case increment
+        case incrementFreq = "increment_freq"
+        case deload
+        case deloadFreq = "deload_freq"
+    }
+}
+
+
 
 
 
@@ -87,19 +130,6 @@ struct ProgramRoutine: Codable {
     let routineOrder: Int
 }
 
-struct Person: Codable {
-    let id: UUID
-    let created_at: Date
-}
-
-
-
-struct Routine: Codable {
-    let id: Int
-    let created_at: Date
-    let routineName: String
-    let description: String?
-}
 
 struct RoutineExercise: Codable {
     let id: Int
@@ -108,11 +138,4 @@ struct RoutineExercise: Codable {
     let sets: Int
 }
 
-struct Exercise: Codable {
-    let id: Int
-    let exerciseName: String
-    let description: String?
-    let defaultReps: Int
-    let defaultSets: Int
-    let defaultWeight: Double
-}
+

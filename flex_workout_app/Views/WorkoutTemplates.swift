@@ -84,9 +84,6 @@ struct BlankView: View {
             Text("Default Weight: \(exercise.defaultWeight, specifier: "%.1f")lb")
             Text("Default Sets: \(exercise.defaultSets)")
             Text("Default Reps: \(exercise.defaultReps)")
-            if let description = exercise.description {
-                Text("Description: \(description)")
-            }
         }
         .padding()
         .navigationTitle(exercise.exerciseName)

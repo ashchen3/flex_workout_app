@@ -8,12 +8,23 @@
 import SwiftUI
 
 struct WorkoutsView: View {
+    @StateObject var viewModel = ProgramViewModel()
+
+    @EnvironmentObject var userState: UserState
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
+                    if let activeProgNum = userState.profile?.selectedProgram {
+                        Text("\(activeProgNum)")
+                    }
+                    
                     WorkoutList()
                     ScheduleButton()
+                }
+                .task {
+                    try? await userState.fetchProfile()
                 }
                 .padding()
             }
@@ -93,5 +104,6 @@ struct ScheduleButton: View {
 struct WorkoutProgramView_Previews: PreviewProvider {
     static var previews: some View {
         WorkoutsView()
+            .environmentObject(UserState())
     }
 }

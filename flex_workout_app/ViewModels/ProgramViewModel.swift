@@ -18,6 +18,7 @@ class ProgramViewModel: ObservableObject {
     
     // MARK: CRUD Programs
     
+    @MainActor
     func createProgram(programName: String) async throws {
         let user = try await supabase.auth.session.user
         

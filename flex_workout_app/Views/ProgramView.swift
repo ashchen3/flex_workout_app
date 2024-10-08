@@ -24,38 +24,31 @@ struct ProgramView: View {
                     // Content
                     ScrollView {
                         VStack(spacing: 16) {
+                            Text("ACTIVE PROGRAM")
+                                .foregroundColor(.gray)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading)
                             
-                            if let profile = userState.profile {
-                               
-                                Text("ACTIVE PROGRAM")
+                            if let activeProgram = viewModel.programs.first(where: { $0.id == userState.profile?.selectedProgram })
+                            {
+                                ProgramCard(program: activeProgram, isActive: true) {
+                                    activeSheet = activeProgram
+                                }
+                            } else {
+                                Text("No active program selected")
                                     .foregroundColor(.gray)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.leading)
-                                
+                                    .italic()
+                            }
                             
-                                if let selectedId = profile.selectedProgram {
-                                    
-                                    if let activeProgram = viewModel.programs.first(where: { $0.id == selectedId }) {
-                                        ProgramCard(program: activeProgram, isActive: true) {
-                                            activeSheet = activeProgram
-                                        }
-                                    } else {
-                                        Text("No active program selected")
-                                            .foregroundColor(.gray)
-                                            .italic()
-                                    }
-                                    
-                                    
-                                    Text("OTHER PROGRAMS")
-                                        .foregroundColor(.gray)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(.leading)
-                                    
-                                    ForEach(viewModel.programs.filter { $0.id != profile.selectedProgram }) { program in
-                                        ProgramCard(program: program) {
-                                            activeSheet = program
-                                        }
-                                    }
+                            Text("OTHER PROGRAMS")
+                                .foregroundColor(.gray)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading)
+                            
+                            ForEach(viewModel.programs.filter { $0.id != userState.profile?.selectedProgram })
+                            { program in
+                                ProgramCard(program: program) {
+                                    activeSheet = program
                                 }
                             }
                         }
@@ -63,7 +56,7 @@ struct ProgramView: View {
                             ProgramInfo(program: item, viewModel: viewModel)
                                 .presentationDetents([.fraction(2/3)])
                                 .presentationCompactAdaptation(.none)
-                        }
+                            }
                         .padding(.vertical)
                     }
                 }
@@ -72,11 +65,11 @@ struct ProgramView: View {
                 if showSelectionView {
                     ProgramSelectionView(viewModel: viewModel, isPresented: $showSelectionView){
                         Task {
-                            await fetchProfile()
+                            try? await userState.fetchProfile()
                         }
                     }
-                        .transition(.opacity)
-                        .zIndex(1)
+                    .transition(.opacity)
+                    .zIndex(1)
                 }
             }
             .foregroundColor(.black)
@@ -113,45 +106,37 @@ struct ProgramView: View {
                 })
             }
             .task {
-                await fetchPrograms()
-//                await fetchSelectedProgram()
-                await fetchProfile()
+                try? await viewModel.fetchPrograms()
+                try? await userState.fetchProfile()
+                //await fetchProfile()
             }
         }
     }
-
-    func fetchProfile() async {
-        do {
-            try await userState.fetchProfile()
-            print("Profile fetched")
-        } catch {
-            print("Error w/ profile: \(error)")
-        }
-    }
     
-    func fetchSelectedProgram() async {
-        do {
-            try await viewModel.fetchSelectedProgram()
-            print("Selected Program fetched")
-        } catch {
-            print("Error w/ selection: \(error)")
-        }
-    }
-    
-    func fetchPrograms() async {
-        do {
-            try await viewModel.fetchPrograms()
-            print("programs fetched")
-        } catch {
-            print("Error fetching programs: \(error)")
-        }
-    }
+//
+//    func fetchProfile() async {
+//        do {
+//            try await userState.fetchProfile()
+//            print("Profile fetched")
+//        } catch {
+//            print("Error w/ profile: \(error)")
+//        }
+//    }
+//    
+//    func fetchPrograms() async {
+//        do {
+//            try await viewModel.fetchPrograms()
+//            print("programs fetched")
+//        } catch {
+//            print("Error fetching programs: \(error)")
+//        }
+//    }
 
     func createProgram() async {
         do {
             try await viewModel.createProgram(programName: newProgramName)
             newProgramName = ""
-            await fetchPrograms()
+            try await viewModel.fetchPrograms()
         } catch {
             print("Error creating program: \(error)")
         }

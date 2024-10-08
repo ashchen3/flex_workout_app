@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject var viewModel = ProgramViewModel()
     
+    @EnvironmentObject var userState: UserState
     
     var body: some View {
         NavigationView {
@@ -19,8 +19,11 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .italic()
                     .foregroundColor(.cyan)
-                if let text = viewModel.selectedProgram?.programName {
-                    Text(text)
+                if let profile = userState.profile {
+                    if let selectedId = profile.selectedProgram {
+                        Text("Program ID: \(selectedId)")
+                    }
+                    
                 }
                 
                 Spacer()
