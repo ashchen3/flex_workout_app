@@ -99,19 +99,27 @@ class WorkoutsViewModel: ObservableObject {
     // MARK: - Exercise CRUD Functions
     
     func fetchProgramExercises(for workout: Workout) async throws -> [Exercise] {
+        
         let response: [WorkoutExercise] = try await supabase
             .from("workout_exercises")
-            .select("*, exercises(*)")
+            .select("*, user_exercises(*)")
             .eq("workout_id", value: workout.id)
             .execute()
             .value
         
-        let exercises = response.compactMap { $0.exercises }
-        return exercises
+        let userExerciseIds = response.map { $0.user_exercise_id }
+
+        print(userExerciseIds)
         
-//        await MainActor.run {
-//            self.exercises = exercises
-//        }
+        let exercisesResponse: [Exercise] = try await supabase
+            .from("user_exercises")
+            .select("*")
+            .in("id", values: userExerciseIds)
+            .execute()
+            .value
+        
+        return exercisesResponse
+        
     }
     
     func fetchAllExercises() async throws -> [Exercise] {
@@ -123,33 +131,79 @@ class WorkoutsViewModel: ObservableObject {
         return response
     }
     
-    func addExerciseToWorkout(_ exercise: Exercise, workout: Workout) async throws {
-        let user = try await supabase.auth.session.user
-        
-        let workoutExercise = WorkoutExercise(workout_id: workout.id!, exercise_id: exercise.id!, user_id: user.id)
-        
-        try await supabase
-            .from("workout_exercises")
-            .insert(workoutExercise)
-            .execute()
-        
-//        await MainActor.run {
-//            self.exercises.append(exercise)
-//        }
-    }
+//    func addExerciseToWorkout(_ exercise: Exercise, workout: Workout) async throws {
+//        let user = try await supabase.auth.session.user
+//        
+//        let workoutExercise = WorkoutExercise(workout_id: workout.id!, exercise_id: exercise.id!, user_id: user.id)
+//        
+//        try await supabase
+//            .from("workout_exercises")
+//            .insert(workoutExercise)
+//            .execute()
+//        
+////        await MainActor.run {
+////            self.exercises.append(exercise)
+////        }
+//    }
     
     func addExercisesToWorkout(_ exercises: [Exercise], workout: Workout) async throws {
         let user = try await supabase.auth.session.user
 
         for exercise in exercises {
-            let workoutExercise = WorkoutExercise(workout_id: workout.id!, exercise_id: exercise.id!, user_id: user.id)
             
-            try await supabase
-                .from("workout_exercises")
-                .insert(workoutExercise)
+            //Check existance of user_exercise
+            let existingUserExercises: [Exercise] = try await supabase
+                .from("user_exercises")
+                .select("*")
+                .eq("user_id", value: user.id)
+                .eq("exercise_name", value: exercise.exerciseName)
                 .execute()
-        }
+                .value
+            
+            if let existingUserExercise = existingUserExercises.first {
+                // Use the existing user_exercise
 
+                let workoutExercise = WorkoutExercise(
+                    workout_id: workout.id!,
+                    exercise_id: exercise.id!,
+                    user_exercise_id: existingUserExercise.id!,
+                    user_id: user.id
+                )
+                
+                try await supabase
+                    .from("workout_exercises")
+                    .insert(workoutExercise)
+                    .execute()
+            } else {
+                let userExercise = Exercise(
+                    user_id: user.id,
+                    exerciseName: exercise.exerciseName,
+                    defaultWeight: exercise.defaultWeight,
+                    defaultReps: exercise.defaultReps,
+                    defaultSets: exercise.defaultSets
+                )
+                
+                let response: Exercise = try await supabase
+                    .from("user_exercises")
+                    .insert(userExercise)
+                    .select()
+                    .single()
+                    .execute()
+                    .value
+                
+                let workoutExercise = WorkoutExercise(
+                    workout_id: workout.id!,
+                    exercise_id: exercise.id!,
+                    user_exercise_id: response.id!,
+                    user_id: user.id
+                )
+                
+                try await supabase
+                    .from("workout_exercises")
+                    .insert(workoutExercise)
+                    .execute()
+            }
+        }
     }
     
     func removeExerciseFromWorkout(_ exercise: Exercise, workout: Workout) async throws {
@@ -157,7 +211,7 @@ class WorkoutsViewModel: ObservableObject {
             .from("workout_exercises")
             .delete()
             .eq("workout_id", value: workout.id)
-            .eq("exercise_id", value: exercise.id)
+            .eq("user_exercise_id", value: exercise.id)
             .execute()
         
 //        await MainActor.run {

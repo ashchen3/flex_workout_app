@@ -50,7 +50,7 @@ struct WorkoutsView: View {
                 VStack(spacing: 20) {
                     VStack(spacing: 0) {
                         ForEach(viewModel.workouts) { workout in
-                            WorkoutRow(workout: workout)
+                            WorkoutRow(viewModel: viewModel, workout: workout)
                                 .onTapGesture {
                                     selectedWorkout = workout
                                 }
@@ -112,20 +112,41 @@ struct WorkoutsView: View {
 
 
 struct WorkoutRow: View {
+    @ObservedObject var viewModel: WorkoutsViewModel
     let workout: Workout
+    @State var exercises: [Exercise] = []
+    
         
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
                 Text(workout.workoutName)
                     .font(.headline)
-                Text("Squat, Bench, BB Row")
+                
+                //TODO: WE WANT THIS TO BE for each exercise
+                
+//                Text("Exercise 1, Exercise 2, Exercise 3, ...")
+//                  .font(.subheadline)
+//                  .foregroundColor(.gray)
+                
+                Text(
+                    exercises.prefix(2)
+                        .map { $0.exerciseName }
+                        .joined(separator: ", ") +
+                    (exercises.count > 2 ? ", ..." : "")
+                )
                     .font(.subheadline)
                     .foregroundColor(.gray)
+                
             }
             Spacer()
             Image(systemName: "chevron.right")
                 .foregroundColor(.gray)
+        }
+        .onAppear {
+            Task {
+                exercises = try await viewModel.fetchProgramExercises(for: workout)
+            }
         }
         .padding()
     }

@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ExerciseSelectionView: View {
-    @StateObject private var viewModel = WorkoutsViewModel()
+    @ObservedObject var viewModel: WorkoutsViewModel
     @State private var selectedExercises: Set<Exercise> = []
     @State private var exercises: [Exercise] = []
     @Environment(\.presentationMode) var presentationMode
-    let workout: Workout
+    let workout: Workout?
     let onExercisesAdded: ([Exercise]) -> Void
     
     var body: some View {
@@ -66,7 +66,9 @@ struct ExerciseSelectionView: View {
     private func addExercises(_ exercises: [Exercise]) {
         Task {
             do {
-                try await viewModel.addExercisesToWorkout(exercises, workout: workout)
+                if let workout = workout {
+                    try await viewModel.addExercisesToWorkout(exercises, workout: workout)
+                }
                 onExercisesAdded(exercises)
                 await MainActor.run {
                     presentationMode.wrappedValue.dismiss()
@@ -100,6 +102,10 @@ struct SelectExerciseRow: View {
 
 struct ExerciseSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseSelectionView(workout: Workout(id: 1, user_id: UUID(), workoutName: "Sample Workout", programId: 1), onExercisesAdded: {_ in })
+        ExerciseSelectionView(
+            viewModel: WorkoutsViewModel(),
+            workout: Workout(id: 1, user_id: UUID(), workoutName: "Sample Workout", programId: 1),
+            onExercisesAdded: {_ in }
+        )
     }
 }

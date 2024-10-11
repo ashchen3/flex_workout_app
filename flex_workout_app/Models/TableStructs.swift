@@ -66,27 +66,29 @@ struct Workout: Identifiable, Codable, Equatable {
 
 struct Exercise: Identifiable, Codable, Hashable {
     var id: Int? //To be populated by Supabase
+    var user_id: UUID?
     var exerciseName: String
     var defaultWeight: Double
     var defaultReps: Int
     var defaultSets: Int
-    var user_id: UUID?
     var increment: Float?
     var incrementFreq: Int?
     var deload: Float?
     var deloadFreq: Int?
+    var currentWeight: Float?
     
     enum CodingKeys: String, CodingKey {
         case id
+        case user_id
         case exerciseName = "exercise_name"
         case defaultWeight = "default_weight"
         case defaultReps = "default_reps"
         case defaultSets = "default_sets"
-        case user_id
         case increment
         case incrementFreq = "increment_freq"
         case deload
         case deloadFreq = "deload_freq"
+        case currentWeight = "current_weight"
     }
     
     func hash(into hasher: inout Hasher) {
@@ -98,6 +100,7 @@ struct WorkoutExercise: Codable, Identifiable {
     var id: Int?
     var workout_id: Int
     var exercise_id: Int
+    var user_exercise_id: Int
     var user_id: UUID
     var exercises: Exercise?
 }
@@ -120,44 +123,6 @@ struct RoutineHistory: Codable {
     let isCompleted: Bool
 }
 
-struct PersonProgramExerciseSet: Codable {
-    let id: Int
-    let personProgramExerciseID: Int
-    let setNumber: Int
-    let repsCompleted: Int
-    let weight: Double
-    let isCompleted: Bool
-}
 
-struct PersonProgramExercise: Codable {
-    let id: Int
-    let created_at: Date
-    let personProgramID: Int
-    let exerciseID: Int
-    let routineID: Int
-    let isCompleted: Bool
-    let routineHistoryID: Int
-}
-
-struct PeopleProgram: Codable {
-    let id: Int
-    let personID: UUID
-    let programID: Int
-}
-
-struct ProgramRoutine: Codable {
-    let id: Int
-    let programID: Int
-    let routineID: Int
-    let routineOrder: Int
-}
-
-
-struct RoutineExercise: Codable {
-    let id: Int
-    let routineID: Int
-    let exerciseID: Int
-    let sets: Int
-}
 
 
