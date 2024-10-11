@@ -108,29 +108,9 @@ struct ProgramView: View {
             .task {
                 try? await viewModel.fetchPrograms()
                 try? await userState.fetchProfile()
-                //await fetchProfile()
             }
         }
     }
-    
-//
-//    func fetchProfile() async {
-//        do {
-//            try await userState.fetchProfile()
-//            print("Profile fetched")
-//        } catch {
-//            print("Error w/ profile: \(error)")
-//        }
-//    }
-//    
-//    func fetchPrograms() async {
-//        do {
-//            try await viewModel.fetchPrograms()
-//            print("programs fetched")
-//        } catch {
-//            print("Error fetching programs: \(error)")
-//        }
-//    }
 
     func createProgram() async {
         do {

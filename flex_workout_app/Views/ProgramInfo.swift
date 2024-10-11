@@ -23,34 +23,18 @@ struct ProgramInfo: View {
     
     var body: some View {
         VStack {
-            HStack {
-                if isEditing {
-                    TextField("Program Name", text: $editedName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .font(.title2)
-                        .bold()
-                        .disableAutocorrection(true)
-                        .textInputAutocapitalization(.never)
-                } else {
-                    Text(program.programName)
-                        .font(.title2)
-                        .bold()
-                }
-                
-                Button(action: {
-                    if isEditing {
-                        Task {
-                            await viewModel.updateProgram(program, with: editedName)
-                            try await viewModel.fetchPrograms()
-                            presentationMode.wrappedValue.dismiss()
-                        }
+            EditableTextField(
+                text: $editedName,
+                isEditing: $isEditing,
+                placeholder: "Program Name",
+                onSubmit: {
+                    Task {
+                        await viewModel.updateProgram(program, with: editedName)
+                        try await viewModel.fetchPrograms()
+                        presentationMode.wrappedValue.dismiss()
                     }
-                    isEditing.toggle()
-                }) {
-                    Image(systemName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill")
-                        .foregroundColor(.blue)
                 }
-            }
+            )
             .padding()
             .frame(maxWidth: .infinity, alignment: .center)
             .background(Color(UIColor.systemGray6))

@@ -8,65 +8,118 @@
 import SwiftUI
 
 struct WorkoutsView: View {
-    @StateObject var viewModel = ProgramViewModel()
-
+    @StateObject var viewModel = WorkoutsViewModel()
+    @State private var isCreatingNewWorkout = false
+    @State private var showEditView = false
+    @State private var selectedWorkout: Workout?
+    @State private var selectedProgram: Int?
     @EnvironmentObject var userState: UserState
     
+    init() {
+            _selectedProgram = State(initialValue: nil)
+    }
+    
     var body: some View {
+        Group {
+            if let programId = selectedProgram {
+                workoutView(programId: programId)
+            } else {
+                noProgramView()
+            }
+        }
+        .task {
+            await fetchDataAndWorkouts()
+        }
+    }
+    
+    private func fetchDataAndWorkouts() async {
+        do {
+            try await userState.fetchProfile()
+            selectedProgram = userState.profile?.selectedProgram
+            if let programId = selectedProgram {
+                try await viewModel.fetchWorkouts(for: programId)
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+    }
+        
+    private func workoutView(programId: Int) -> some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    if let activeProgNum = userState.profile?.selectedProgram {
-                        Text("\(activeProgNum)")
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.workouts) { workout in
+                            WorkoutRow(workout: workout)
+                                .onTapGesture {
+                                    selectedWorkout = workout
+                                }
+                            Divider().background(Color.gray.opacity(0.3))
+                        }
                     }
-                    
-                    WorkoutList()
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    )
+
                     ScheduleButton()
                 }
-                .task {
-                    try? await userState.fetchProfile()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            isCreatingNewWorkout = true
+                        }) {
+                            Text("Add Workout")
+                                .foregroundColor(.cyan)
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            showEditView = true
+                        }) {
+                            Text("Edit")
+                                .foregroundColor(.cyan)
+                        }
+                    }
+                }
+                .sheet(item: $selectedWorkout) { workout in
+                    EditWorkoutView(workout: workout, viewModel: viewModel, programId: programId)
+                }
+                .sheet(isPresented: $isCreatingNewWorkout) {
+                    NewWorkoutView(viewModel: viewModel, programId: programId)
                 }
                 .padding()
             }
-            
         }
-    }
-}
-
-
-struct WorkoutList: View {
-    var body: some View {
-        VStack(spacing: 0) {
-            WorkoutRow(name: "Workout A", exercises: "Squat, Bench, BB Row")
-            Divider().background(Color.gray.opacity(0.3))
-            WorkoutRow(name: "Workout B", exercises: "Squat, OHP, Deadlift")
-            Divider().background(Color.gray.opacity(0.3))
-            Button(action: {}) {
-                Text("Add Workout")
-                    .foregroundColor(.cyan)
-                    .padding(.vertical, 10)
+        .onChange(of: viewModel.workouts) {
+            Task {
+                await fetchDataAndWorkouts()
             }
         }
-        .background(Color.white)
-        .cornerRadius(10)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-        )
-        
+    }
+    
+    
+    private func noProgramView() -> some View {
+        VStack {
+            Text("Please select a program")
+                .foregroundColor(.gray)
+                .italic()
+        }
     }
 }
 
+
 struct WorkoutRow: View {
-    let name: String
-    let exercises: String
-    
+    let workout: Workout
+        
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
-                Text(name)
+                Text(workout.workoutName)
                     .font(.headline)
-                Text(exercises)
+                Text("Squat, Bench, BB Row")
                     .font(.subheadline)
                     .foregroundColor(.gray)
             }

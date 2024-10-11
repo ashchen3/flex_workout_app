@@ -37,23 +37,34 @@ struct Program: Identifiable, Codable {
     }
 }
 
-struct Workout: Codable {
+struct Workout: Identifiable, Codable, Equatable {
     var id: Int? //To be populated by Supabase
+    var user_id: UUID
     var workoutName: String
     var programId: Int
-    var user_id: UUID
-    var workoutOrder: Int? //also populated by Supabase? and/or iterated upon after creation
+//    var workoutOrder: Int? //also populated by Supabase? and/or iterated upon after creation
     
     enum CodingKeys: String, CodingKey {
         case id
+        case user_id
         case workoutName = "workout_name"
         case programId = "program_id"
-        case user_id
-        case workoutOrder = "workout_order"
+//        case workoutOrder = "workout_order"
+    }
+    
+    static func == (lhs: Workout, rhs: Workout) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.user_id == rhs.user_id &&
+            lhs.workoutName == rhs.workoutName &&
+            lhs.programId == rhs.programId 
+//                lhs.workoutOrder == rhs.workoutOrder
+            
     }
 }
 
-struct Exercise: Codable {
+
+
+struct Exercise: Identifiable, Codable, Hashable {
     var id: Int? //To be populated by Supabase
     var exerciseName: String
     var defaultWeight: Double
@@ -77,8 +88,19 @@ struct Exercise: Codable {
         case deload
         case deloadFreq = "deload_freq"
     }
+    
+    func hash(into hasher: inout Hasher) {
+         hasher.combine(id)
+     }
 }
 
+struct WorkoutExercise: Codable, Identifiable {
+    var id: Int?
+    var workout_id: Int
+    var exercise_id: Int
+    var user_id: UUID
+    var exercises: Exercise?
+}
 
 
 

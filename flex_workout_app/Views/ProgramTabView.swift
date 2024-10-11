@@ -43,4 +43,5 @@ struct ProgramTabView: View {
 
 #Preview {
     ProgramTabView()
+        .environmentObject(UserState())
 }

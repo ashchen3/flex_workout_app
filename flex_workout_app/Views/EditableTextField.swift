@@ -9,43 +9,36 @@ import SwiftUI
 
 struct EditableTextField: View {
     @Binding var text: String
-    @State private var isEditing = false
+    @Binding var isEditing: Bool
     let placeholder: String
+    let onSubmit: () -> Void
     
     var body: some View {
         HStack {
             if isEditing {
                 TextField(placeholder, text: $text)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .animation(.easeInOut, value: isEditing)
+                    .font(.title2)
+                    .bold()
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.never)
             } else {
-                Text(text.isEmpty ? placeholder : text)
-                    .foregroundColor(text.isEmpty ? .gray : .primary)
+                Text(text)
+                    .font(.title2)
+                    .bold()
             }
             
-            Spacer()
-            
             Button(action: {
-                withAnimation {
-                    isEditing.toggle()
+                if isEditing {
+                    onSubmit()
                 }
+                isEditing.toggle()
             }) {
                 Image(systemName: isEditing ? "checkmark.circle.fill" : "pencil.circle.fill")
                     .foregroundColor(.cyan)
-                    .font(.system(size: 20))
             }
         }
-        .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(10)
-        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
     }
 }
 
-struct EditableTextField_Previews: PreviewProvider {
-    static var previews: some View {
-        EditableTextField(text: .constant("Sample Text"), placeholder: "Enter text here")
-            .previewLayout(.sizeThatFits)
-            .padding()
-    }
-}
+
