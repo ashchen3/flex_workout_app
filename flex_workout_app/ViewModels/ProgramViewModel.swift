@@ -22,7 +22,7 @@ class ProgramViewModel: ObservableObject {
     func createProgram(programName: String) async throws {
         let user = try await supabase.auth.session.user
         
-        let program = Program(user_id: user.id, programName: programName)
+        let program = Program(user_id: user.id, programName: programName, numWorkouts: 0)
         
         let newProgram: Program = try await supabase
             .from("programs")

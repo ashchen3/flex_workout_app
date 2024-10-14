@@ -48,17 +48,33 @@ class WorkoutsViewModel: ObservableObject {
     
     }
 
+    
     func fetchWorkouts(for programId: Int) async throws {
         let response: [Workout] = try await supabase
             .from("workouts")
             .select("*")
             .eq("program_id", value: programId)
-            .order("workout_order")
+            .order("workout_order", ascending: true)  // Sort by workout_order
             .execute()
             .value
         
         await MainActor.run {
             self.workouts = response
+        }
+    }
+    
+    func updateWorkoutOrder(workouts: [Workout]) async throws {
+        for (index, workout) in workouts.enumerated() {
+            try await supabase
+                .from("workouts")
+                .update(["workout_order": index + 1])
+                .eq("id", value: workout.id!)
+                .execute()
+        }
+        
+        // Refresh the workouts after updating
+        if let programId = workouts.first?.programId {
+            try await fetchWorkouts(for: programId)
         }
     }
     
@@ -90,6 +106,10 @@ class WorkoutsViewModel: ObservableObject {
             .eq("id", value: workout.id)
             .execute()
         
+//        try await supabase
+//            .from("programs")
+//            .update(<#T##values: Encodable & Sendable##Encodable & Sendable#>)
+        
         await MainActor.run {
             self.workouts.removeAll { $0.id == workout.id }
         }
@@ -108,15 +128,16 @@ class WorkoutsViewModel: ObservableObject {
             .value
         
         let userExerciseIds = response.map { $0.user_exercise_id }
-
-        print(userExerciseIds)
         
         let exercisesResponse: [Exercise] = try await supabase
             .from("user_exercises")
             .select("*")
             .in("id", values: userExerciseIds)
+            .order("created_at", ascending: false)
             .execute()
             .value
+        
+        print("Fetching user exercises")
         
         return exercisesResponse
         

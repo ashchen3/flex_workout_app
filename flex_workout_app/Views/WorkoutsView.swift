@@ -24,7 +24,7 @@ struct WorkoutsView: View {
             if let programId = selectedProgram {
                 workoutView(programId: programId)
             } else {
-                noProgramView()
+                NoProgramView()
             }
         }
         .task {
@@ -99,15 +99,6 @@ struct WorkoutsView: View {
             }
         }
     }
-    
-    
-    private func noProgramView() -> some View {
-        VStack {
-            Text("Please select a program")
-                .foregroundColor(.gray)
-                .italic()
-        }
-    }
 }
 
 
@@ -122,12 +113,6 @@ struct WorkoutRow: View {
             VStack(alignment: .leading, spacing: 5) {
                 Text(workout.workoutName)
                     .font(.headline)
-                
-                //TODO: WE WANT THIS TO BE for each exercise
-                
-//                Text("Exercise 1, Exercise 2, Exercise 3, ...")
-//                  .font(.subheadline)
-//                  .foregroundColor(.gray)
                 
                 Text(
                     exercises.prefix(2)

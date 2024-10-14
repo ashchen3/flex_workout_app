@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ProgramTabView: View {
     @State private var selectedSegment = 0
-    let segments = ["Program", "Workouts", "Weights", "Sets×Reps"]
+    let segments = ["Program", "Workouts", "Exercises"]
     
     var body: some View {
         VStack {
             Picker("Select", selection: $selectedSegment) {
-                ForEach(0..<4) { index in
+                ForEach(0..<3) { index in
                     Text(self.segments[index])
                         .tag(index)
                 }
@@ -30,10 +30,8 @@ struct ProgramTabView: View {
             } else if selectedSegment == 1 {
                 WorkoutsView()
             } else if selectedSegment == 2 {
-                WeightsView()
-            } else if selectedSegment == 3 {
-                SetsRepsView()
-            }
+                ExercisesView()
+            } 
 
             Spacer()
         }

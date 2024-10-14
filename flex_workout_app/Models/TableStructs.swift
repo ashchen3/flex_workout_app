@@ -28,12 +28,14 @@ struct Program: Identifiable, Codable {
     var user_id: UUID
     var programName: String
     var createdAt: Date?
+    var numWorkouts: Int
     
     enum CodingKeys: String, CodingKey {
         case id
         case user_id
         case programName = "program_name"
         case createdAt = "created_at"
+        case numWorkouts = "num_workouts"
     }
 }
 
@@ -42,22 +44,22 @@ struct Workout: Identifiable, Codable, Equatable {
     var user_id: UUID
     var workoutName: String
     var programId: Int
-//    var workoutOrder: Int? //also populated by Supabase? and/or iterated upon after creation
+    var workoutOrder: Int? //also populated by Supabase? and/or iterated upon after creation
     
     enum CodingKeys: String, CodingKey {
         case id
         case user_id
         case workoutName = "workout_name"
         case programId = "program_id"
-//        case workoutOrder = "workout_order"
+        case workoutOrder = "workout_order"
     }
     
     static func == (lhs: Workout, rhs: Workout) -> Bool {
         return lhs.id == rhs.id &&
             lhs.user_id == rhs.user_id &&
             lhs.workoutName == rhs.workoutName &&
-            lhs.programId == rhs.programId 
-//                lhs.workoutOrder == rhs.workoutOrder
+            lhs.programId == rhs.programId &&
+            lhs.workoutOrder == rhs.workoutOrder
             
     }
 }

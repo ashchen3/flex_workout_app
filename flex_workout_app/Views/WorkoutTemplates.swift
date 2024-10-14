@@ -58,21 +58,42 @@ struct WorkoutSection<T: View>: View {
     }
 }
 
-struct ExerciseRow<T: View>: View {
+struct ExerciseRow: View {
     let exercise: Exercise
-    let rightContent: (Exercise) -> T
     
     var body: some View {
         HStack {
-            Text(exercise.exerciseName)
-                .foregroundColor(.primary)
+            VStack(alignment: .leading) {
+                Text(exercise.exerciseName)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Text("\(exercise.defaultSets) sets x \(exercise.defaultReps) reps")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
             Spacer()
-            rightContent(exercise)
+            Text(exercise.currentWeight != nil ?
+                 "\(String(format: "%.1f", exercise.currentWeight!)) lb" : "None")
+                .foregroundColor(.primary)
         }
         .padding()
         .contentShape(Rectangle())
     }
 }
+
+//struct ExerciseRow<T: View>: View {
+//    let exercise: Exercise
+//    
+//    var body: some View {
+//        HStack {
+//            Text(exercise.exerciseName)
+//                .foregroundColor(.primary)
+//            Spacer()
+//        }
+//        .padding()
+//        .contentShape(Rectangle())
+//    }
+//}
 
 struct BlankView: View {
     let exercise: Exercise
