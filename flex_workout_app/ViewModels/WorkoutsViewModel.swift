@@ -8,26 +8,27 @@
 import Foundation
 import Supabase
 
-
-//struct Workout: Codable {
-//    let id: Int? //To be populated by Supabase
-//    let workoutName: String
-//    let programId: Int
-//    let user_id: UUID
-//    
-//    enum CodingKeys: String, CodingKey {
-//        case id
-//        case workoutName = "workout_name"
-//        case programId = "program_id"
-//        case user_id
-//    }
-//}
-
 class WorkoutsViewModel: ObservableObject {
     @Published var workouts: [Workout] = []
+    @Published var workoutsWithExercises: [WorkoutWithExercises] = []
     
     private let supabase = SupabaseClient(supabaseURL: Secrets.projectURL, supabaseKey: Secrets.apiKey)
 
+    // MARK: WorkoutExercises
+    
+    @MainActor
+    func fetchWorkoutsWithExercises(for programId: Int) async throws {
+        let local_workouts: [Workout] = try await fetchWorkouts(for: programId)
+        var workoutsWithExercises: [WorkoutWithExercises] = []
+        
+        for workout in local_workouts {
+            let exercises: [Exercise] = try await fetchProgramExercises(for: workout)
+            workoutsWithExercises.append(WorkoutWithExercises(workout: workout, exercises: exercises))
+        }
+        
+        self.workoutsWithExercises = workoutsWithExercises
+    }
+    
     // MARK: CRUD Workouts
     
     @MainActor
@@ -45,11 +46,30 @@ class WorkoutsViewModel: ObservableObject {
             .value
         
         self.workouts.append(newWorkout)
-    
     }
 
+    func getWorkoutWithExercises(for workoutId: Int) async throws -> WorkoutWithExercises {
+        let workout = try await fetchWorkout(id: workoutId)
+        let exercises = try await fetchProgramExercises(for: workout)
+        
+        // Create and return the WorkoutWithExercises object
+        return WorkoutWithExercises(workout: workout, exercises: exercises)
+    }
     
-    func fetchWorkouts(for programId: Int) async throws {
+    private func fetchWorkout(id: Int) async throws -> Workout {
+        let response: Workout = try await supabase
+            .from("workouts")
+            .select("*")
+            .eq("id", value: id)
+            .single()
+            .execute()
+            .value
+        
+        return response
+    }
+    
+    
+    func fetchWorkouts(for programId: Int) async throws -> [Workout] {
         let response: [Workout] = try await supabase
             .from("workouts")
             .select("*")
@@ -61,6 +81,7 @@ class WorkoutsViewModel: ObservableObject {
         await MainActor.run {
             self.workouts = response
         }
+        return response
     }
     
     func updateWorkoutOrder(workouts: [Workout]) async throws {
@@ -74,7 +95,7 @@ class WorkoutsViewModel: ObservableObject {
         
         // Refresh the workouts after updating
         if let programId = workouts.first?.programId {
-            try await fetchWorkouts(for: programId)
+            _ = try await fetchWorkouts(for: programId)
         }
     }
     
@@ -106,14 +127,11 @@ class WorkoutsViewModel: ObservableObject {
             .eq("id", value: workout.id)
             .execute()
         
-//        try await supabase
-//            .from("programs")
-//            .update(<#T##values: Encodable & Sendable##Encodable & Sendable#>)
-        
         await MainActor.run {
             self.workouts.removeAll { $0.id == workout.id }
         }
     }
+    
     
     
     // MARK: - Exercise CRUD Functions
@@ -151,21 +169,6 @@ class WorkoutsViewModel: ObservableObject {
             .value
         return response
     }
-    
-//    func addExerciseToWorkout(_ exercise: Exercise, workout: Workout) async throws {
-//        let user = try await supabase.auth.session.user
-//        
-//        let workoutExercise = WorkoutExercise(workout_id: workout.id!, exercise_id: exercise.id!, user_id: user.id)
-//        
-//        try await supabase
-//            .from("workout_exercises")
-//            .insert(workoutExercise)
-//            .execute()
-//        
-////        await MainActor.run {
-////            self.exercises.append(exercise)
-////        }
-//    }
     
     func addExercisesToWorkout(_ exercises: [Exercise], workout: Workout) async throws {
         let user = try await supabase.auth.session.user

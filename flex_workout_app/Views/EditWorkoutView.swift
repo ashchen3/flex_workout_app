@@ -1,15 +1,20 @@
 import SwiftUI
 
 struct EditWorkoutView: View {
+    // Local state that will be pushed to backend on save
     @State private var workoutName: String
     @State private var exercises: [Exercise] = []
+    @State private var exercisesToRemove: Set<Exercise> = []
+    @State private var exercisesToAdd: Set<Exercise> = []
+    
+    // View state
+    @State private var isShowingExerciseSelection = false
+    @Environment(\.presentationMode) var presentationMode
+    
+    // Dependencies
     let workout: Workout
     let programId: Int
     @StateObject private var viewModel: WorkoutsViewModel
-    @Environment(\.presentationMode) var presentationMode
-    @State private var isShowingExerciseSelection = false
-
-
     
     init(workout: Workout, viewModel: WorkoutsViewModel, programId: Int) {
         self.workout = workout
@@ -17,14 +22,14 @@ struct EditWorkoutView: View {
         self._viewModel = StateObject(wrappedValue: viewModel)
         _workoutName = State(initialValue: workout.workoutName)
     }
-
+    
     var body: some View {
         NavigationView {
             List {
                 Section {
                     TextField("Workout Name", text: $workoutName)
                 }
-
+                
                 Section(header: Text("Exercises")) {
                     ForEach(exercises) { exercise in
                         NavigationLink(destination: Text("Edit \(exercise.exerciseName)")) {
@@ -40,11 +45,11 @@ struct EditWorkoutView: View {
                             .foregroundColor(.blue)
                     }
                 }
-
+                
                 Section {
                     Button(action: {
                         Task {
-                            try? await viewModel.deleteWorkout(_:workout)
+                            try? await viewModel.deleteWorkout(workout)
                             presentationMode.wrappedValue.dismiss()
                         }
                     }) {
@@ -55,7 +60,7 @@ struct EditWorkoutView: View {
             }
             .onAppear {
                 Task {
-                    await fetchExercises()
+                    await loadExercises()
                 }
             }
             .sheet(isPresented: $isShowingExerciseSelection) {
@@ -63,11 +68,10 @@ struct EditWorkoutView: View {
                     viewModel: viewModel,
                     workout: workout,
                     onExercisesAdded: { newExercises in
-                        Task {
-                            try? await viewModel.addExercisesToWorkout(newExercises, workout: workout)
-                            await fetchExercises()
-                        }
-                })
+                        exercises.append(contentsOf: newExercises)
+                        exercisesToAdd.formUnion(newExercises)
+                    }
+                )
             }
             .listStyle(InsetGroupedListStyle())
             .navigationTitle("Edit Workout")
@@ -81,15 +85,7 @@ struct EditWorkoutView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         Task {
-                            do {
-                                await viewModel.updateWorkout(workout, with: workoutName)
-                                try await viewModel.fetchWorkouts(for: programId)
-                                await MainActor.run {
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                            } catch {
-                                print("Error updating workout: \(error)")
-                            }
+                            await saveChanges()
                         }
                     }
                 }
@@ -97,26 +93,44 @@ struct EditWorkoutView: View {
         }
     }
     
-    private func fetchExercises() async {
+    private func loadExercises() async {
         do {
             exercises = try await viewModel.fetchProgramExercises(for: workout)
-            print(exercises)
         } catch {
-            print("Error fetching exercises: \(error)")
+            print("Error loading exercises: \(error)")
         }
     }
     
     private func removeExercises(at offsets: IndexSet) {
-        Task {
-            for index in offsets {
-                let exercise = exercises[index]
-                do {
-                    try await viewModel.removeExerciseFromWorkout(exercise, workout: workout)
-                } catch {
-                    print("Error removing exercise: \(error)")
-                }
+        let exercisesToDelete = offsets.map { exercises[$0] }
+        exercisesToRemove.formUnion(exercisesToDelete)
+        exercises.remove(atOffsets: offsets)
+    }
+    
+    private func saveChanges() async {
+        do {
+            // Update workout name if changed
+            if workoutName != workout.workoutName {
+                await viewModel.updateWorkout(workout, with: workoutName)
             }
-            await fetchExercises()
+            
+            // Remove exercises that were deleted
+            for exercise in exercisesToRemove {
+                try await viewModel.removeExerciseFromWorkout(exercise, workout: workout)
+            }
+            
+            // Add new exercises
+            if !exercisesToAdd.isEmpty {
+                try await viewModel.addExercisesToWorkout(Array(exercisesToAdd), workout: workout)
+            }
+            
+            // Refresh workouts list and dismiss
+            _ = try await viewModel.fetchWorkouts(for: programId)
+            await MainActor.run {
+                presentationMode.wrappedValue.dismiss()
+            }
+        } catch {
+            print("Error saving changes: \(error)")
         }
     }
 }

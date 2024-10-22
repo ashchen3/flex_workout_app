@@ -37,7 +37,8 @@ struct WorkoutsView: View {
             try await userState.fetchProfile()
             selectedProgram = userState.profile?.selectedProgram
             if let programId = selectedProgram {
-                try await viewModel.fetchWorkouts(for: programId)
+                _ = try await viewModel.fetchWorkouts(for: programId)
+                try? await viewModel.fetchWorkoutsWithExercises(for: programId)
             }
         } catch {
             print("Error: \(error)")
@@ -46,51 +47,38 @@ struct WorkoutsView: View {
         
     private func workoutView(programId: Int) -> some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    VStack(spacing: 0) {
-                        ForEach(viewModel.workouts) { workout in
-                            WorkoutRow(viewModel: viewModel, workout: workout)
-                                .onTapGesture {
-                                    selectedWorkout = workout
-                                }
-                            Divider().background(Color.gray.opacity(0.3))
+            List {
+                ForEach(viewModel.workoutsWithExercises) { workoutWithExercises in
+                    WorkoutRow(viewModel: viewModel, workoutWithExercises: workoutWithExercises)
+                        .onTapGesture {
+                            selectedWorkout = workoutWithExercises.workout
                         }
-                    }
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                    )
-
-                    ScheduleButton()
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            isCreatingNewWorkout = true
-                        }) {
-                            Text("Add Workout")
-                                .foregroundColor(.cyan)
-                        }
-                    }
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            showEditView = true
-                        }) {
-                            Text("Edit")
-                                .foregroundColor(.cyan)
-                        }
+                .onMove(perform: move)
+            }
+            .listStyle(PlainListStyle()) 
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        isCreatingNewWorkout = true
+                    }) {
+                        Text("Add Workout")
+                            .foregroundColor(.cyan)
                     }
                 }
-                .sheet(item: $selectedWorkout) { workout in
-                    EditWorkoutView(workout: workout, viewModel: viewModel, programId: programId)
+                ToolbarItem(placement: .navigationBarLeading) {
+                    EditButton()
+                        .foregroundColor(.cyan)
                 }
-                .sheet(isPresented: $isCreatingNewWorkout) {
-                    NewWorkoutView(viewModel: viewModel, programId: programId)
-                }
-                .padding()
+            }
+            .sheet(item: $selectedWorkout) { workout in
+                EditWorkoutView(workout: workout, viewModel: viewModel, programId: programId)
+            }
+            .sheet(isPresented: $isCreatingNewWorkout) {
+                NewWorkoutView(viewModel: viewModel, programId: programId)
+            }
+            .refreshable {
+                await fetchDataAndWorkouts()
             }
         }
         .onChange(of: viewModel.workouts) {
@@ -99,26 +87,31 @@ struct WorkoutsView: View {
             }
         }
     }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        viewModel.workouts.move(fromOffsets: source, toOffset: destination)
+        Task {
+            try await viewModel.updateWorkoutOrder(workouts: viewModel.workouts)
+        }
+    }
 }
 
 
 struct WorkoutRow: View {
     @ObservedObject var viewModel: WorkoutsViewModel
-    let workout: Workout
-    @State var exercises: [Exercise] = []
-    
+    let workoutWithExercises: WorkoutWithExercises
         
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
-                Text(workout.workoutName)
+                Text(workoutWithExercises.workout.workoutName)
                     .font(.headline)
                 
                 Text(
-                    exercises.prefix(2)
+                    workoutWithExercises.exercises.prefix(2)
                         .map { $0.exerciseName }
                         .joined(separator: ", ") +
-                    (exercises.count > 2 ? ", ..." : "")
+                    (workoutWithExercises.exercises.count > 2 ? ", ..." : "")
                 )
                     .font(.subheadline)
                     .foregroundColor(.gray)
@@ -128,37 +121,32 @@ struct WorkoutRow: View {
             Image(systemName: "chevron.right")
                 .foregroundColor(.gray)
         }
-        .onAppear {
-            Task {
-                exercises = try await viewModel.fetchProgramExercises(for: workout)
-            }
-        }
         .padding()
     }
 }
 
-struct ScheduleButton: View {
-    var body: some View {
-        Button(action: {}) {
-            HStack {
-                Text("Schedule")
-                    .foregroundColor(.cyan)
-                Spacer()
-                Text("3×/week")
-                    .foregroundColor(.black)
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.gray)
-            }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(10)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-            )
-        }
-    }
-}
+//struct ScheduleButton: View {
+//    var body: some View {
+//        Button(action: {}) {
+//            HStack {
+//                Text("Schedule")
+//                    .foregroundColor(.cyan)
+//                Spacer()
+//                Text("3×/week")
+//                    .foregroundColor(.black)
+//                Image(systemName: "chevron.right")
+//                    .foregroundColor(.gray)
+//            }
+//            .padding()
+//            .background(Color.white)
+//            .cornerRadius(10)
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 10)
+//                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+//            )
+//        }
+//    }
+//}
 
 struct WorkoutProgramView_Previews: PreviewProvider {
     static var previews: some View {

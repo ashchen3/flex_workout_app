@@ -8,46 +8,43 @@
 import SwiftUI
 
 struct WorkoutCardView: View {
-    let workout: WorkoutTemplate
+    let workoutWithExercises: WorkoutWithExercises
     let isTopCard: Bool
-    //let action: () -> Void
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text(workout.title)
+                Text(workoutWithExercises.workout.workoutName)
                     .font(.headline)
                 Spacer()
-                Text(formattedDate(Date().timeIntervalSince1970)) //placeholder for now
+                Text(formattedDate(Date().timeIntervalSince1970)) // placeholder for now
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
             
             Divider()
             
-            ForEach(workout.exerciseTypes, id: \.title) { exercise in
+            ForEach(workoutWithExercises.exercises) { exercise in
                 HStack {
-                    Text(exercise.title)
+                    Text(exercise.exerciseName)
                     Spacer()
-                    Text("\(exercise.defaultSets)×\(exercise.defaultReps) \(Int(exercise.defaultWeight))lb")
+                    Text("\(exercise.defaultSets)×\(exercise.defaultReps) \(Int(exercise.currentWeight ?? Float(exercise.defaultWeight)))lb")
                 }
             }
         }
         .padding()
         .background(Color(.systemBackground))
         .cornerRadius(10)
-        .shadow(radius: 5)
+        .shadow(radius: 1)
         .overlay(
-                    isTopCard ?  // Apply the left border only if it's the top card
-                    Rectangle()
-                        .fill(Color.cyan)
-                        .frame(width: 5)  // Left border width
-                        .padding(.leading, -10)  // Ensure it's flush with the left edge
-                    : nil, alignment: .leading  // Align the overlay to the left
-                )
-        
-        
+            isTopCard ?
+                Rectangle()
+                    .fill(Color.cyan)
+                    .frame(width: 5)
+                    .padding(.leading, -10)
+                : nil,
+            alignment: .leading
+        )
     }
     
     private func formattedDate(_ timeInterval: TimeInterval) -> String {
@@ -59,12 +56,17 @@ struct WorkoutCardView: View {
 }
 
 struct WorkoutCardView_Previews: PreviewProvider {
-    static var workout = WorkoutTemplate.sampleWorkoutTemplates[0]
+    static var sampleWorkout = Workout(id: 1, user_id: UUID(), workoutName: "Sample Workout", programId: 1, workoutOrder: 1)
+    static var sampleExercises = [
+        Exercise(id: 1, user_id: UUID(), exerciseName: "Squat", defaultWeight: 100, defaultReps: 5, defaultSets: 3),
+        Exercise(id: 2, user_id: UUID(), exerciseName: "Bench Press", defaultWeight: 80, defaultReps: 5, defaultSets: 3)
+    ]
+    static var workoutWithExercises = WorkoutWithExercises(workout: sampleWorkout, exercises: sampleExercises)
+    
     static var previews: some View {
-        WorkoutCardView(workout: workout, isTopCard: true)
-        .previewLayout(.sizeThatFits)
-        .padding()
-
+        WorkoutCardView(workoutWithExercises: workoutWithExercises, isTopCard: true)
+            .previewLayout(.sizeThatFits)
+            .padding()
     }
 }
 

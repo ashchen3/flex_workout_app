@@ -39,7 +39,7 @@ struct Program: Identifiable, Codable {
     }
 }
 
-struct Workout: Identifiable, Codable, Equatable {
+struct Workout: Identifiable, Codable, Equatable, Hashable {
     var id: Int? //To be populated by Supabase
     var user_id: UUID
     var workoutName: String
@@ -54,17 +54,18 @@ struct Workout: Identifiable, Codable, Equatable {
         case workoutOrder = "workout_order"
     }
     
+    func hash(into hasher: inout Hasher) {
+         hasher.combine(id)
+     }
+    
     static func == (lhs: Workout, rhs: Workout) -> Bool {
         return lhs.id == rhs.id &&
             lhs.user_id == rhs.user_id &&
             lhs.workoutName == rhs.workoutName &&
             lhs.programId == rhs.programId &&
             lhs.workoutOrder == rhs.workoutOrder
-            
     }
 }
-
-
 
 struct Exercise: Identifiable, Codable, Hashable {
     var id: Int? //To be populated by Supabase
@@ -95,7 +96,22 @@ struct Exercise: Identifiable, Codable, Hashable {
     
     func hash(into hasher: inout Hasher) {
          hasher.combine(id)
-     }
+    }
+    
+    static func == (lhs: Exercise, rhs: Exercise) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.user_id == rhs.user_id &&
+            lhs.exerciseName == rhs.exerciseName &&
+            lhs.defaultWeight == rhs.defaultWeight &&
+            lhs.defaultReps == rhs.defaultReps &&
+            lhs.defaultSets == rhs.defaultSets &&
+            lhs.increment == rhs.increment &&
+            lhs.incrementFreq == rhs.incrementFreq &&
+            lhs.deload == rhs.deload &&
+            lhs.deloadFreq == rhs.deloadFreq &&
+            lhs.currentWeight == rhs.currentWeight
+    }
+    
 }
 
 struct WorkoutExercise: Codable, Identifiable {
@@ -105,6 +121,30 @@ struct WorkoutExercise: Codable, Identifiable {
     var user_exercise_id: Int
     var user_id: UUID
     var exercises: Exercise?
+
+}
+
+
+
+
+struct WorkoutWithExercises: Identifiable, Hashable {
+    let workout: Workout
+    var exercises: [Exercise]
+    
+    var id: Int? { workout.id }
+    
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id ?? 0)  // If you want to hash just based on ID
+    }
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(workout)
+//        hasher.combine(exercises)
+//    }
+    
+    static func == (lhs: WorkoutWithExercises, rhs: WorkoutWithExercises) -> Bool {
+        return lhs.workout == rhs.workout && lhs.exercises == rhs.exercises
+    }
 }
 
 

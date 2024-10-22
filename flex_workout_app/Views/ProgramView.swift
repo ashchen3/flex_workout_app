@@ -16,7 +16,6 @@ struct ProgramView: View {
     
     @EnvironmentObject var userState: UserState
 
-
     var body: some View {
         NavigationView {
             ZStack {

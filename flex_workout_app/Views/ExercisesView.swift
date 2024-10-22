@@ -35,7 +35,7 @@ struct ExercisesView: View {
             try await userState.fetchProfile()
             selectedProgram = userState.profile?.selectedProgram
             if let programId = selectedProgram {
-                try await viewModel.fetchWorkouts(for: programId)
+                _ = try await viewModel.fetchWorkouts(for: programId)
                 await fetchExercisesForWorkouts()
             }
         } catch {
@@ -68,10 +68,10 @@ struct ExercisesView: View {
                 }
             }
         }
+        .listStyle(PlainListStyle()) 
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
-                    //TODO: Make Edit View
                     showEditView = true
                 }) {
                     Text("Edit")
@@ -83,10 +83,11 @@ struct ExercisesView: View {
         .navigationTitle("Weights")
         .sheet(item: $selectedExercise) { exercise in
             EditExerciseView(exercise: exercise) { updatedExercise in
-                if let index = workoutsWithExercises.firstIndex(where: { $0.1.contains(where: { $0.id == updatedExercise.id }) }) {
-                    workoutsWithExercises[index].1.removeAll { $0.id == updatedExercise.id }
-                    workoutsWithExercises[index].1.append(updatedExercise)
-                }
+                if let workoutIndex = workoutsWithExercises.firstIndex(where: { $0.1.contains(where: { $0.id == updatedExercise.id }) }),
+                   let exerciseIndex = workoutsWithExercises[workoutIndex].1.firstIndex(where: { $0.id == updatedExercise.id }) {
+                        // Update in place, preserving order
+                        workoutsWithExercises[workoutIndex].1[exerciseIndex] = updatedExercise
+                    }
                 selectedExercise = nil
             }
             .environmentObject(viewModel)
