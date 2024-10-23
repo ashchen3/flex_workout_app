@@ -22,7 +22,7 @@ struct SingleExerciseRowView: View {
                 Text("\(exercise.defaultSets)×\(exercise.defaultReps) \(String(format: "%.0f", exercise.currentWeight ?? exercise.defaultWeight))lb")
                     .font(.subheadline)
                 
-                //TODO: Add Navigation Link where Exercise is Editable.
+                //TODO: Make Exercise actually Editable. The sheet doesn't update backend right now.
                 Button(action: {
                     showingEditSheet = true
                 }) {

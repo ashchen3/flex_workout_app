@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct ExercisesView: View {
     @StateObject var viewModel = WorkoutsViewModel()
     @State private var selectedProgram: Int?
@@ -18,16 +16,19 @@ struct ExercisesView: View {
     @State private var showEditView = false
     
     var body: some View {
-        Group {
-            if let programId = selectedProgram {
-                weightsView(programId: programId)
-            } else {
-                NoProgramView()
+        NavigationStack {
+            Group {
+                if let programId = selectedProgram {
+                    weightsView(programId: programId)
+                } else {
+                    NoProgramView()
+                }
+            }
+            .task {
+                await fetchDataAndWorkouts()
             }
         }
-        .task {
-            await fetchDataAndWorkouts()
-        }
+        
     }
     
     private func fetchDataAndWorkouts() async {
@@ -80,7 +81,6 @@ struct ExercisesView: View {
             }
         }
         .listStyle(InsetGroupedListStyle())
-        .navigationTitle("Weights")
         .sheet(item: $selectedExercise) { exercise in
             EditExerciseView(exercise: exercise) { updatedExercise in
                 if let workoutIndex = workoutsWithExercises.firstIndex(where: { $0.1.contains(where: { $0.id == updatedExercise.id }) }),

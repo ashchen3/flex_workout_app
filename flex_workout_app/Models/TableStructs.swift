@@ -124,29 +124,41 @@ struct WorkoutExercise: Codable, Identifiable {
 
 }
 
-
-
-
 struct WorkoutWithExercises: Identifiable, Hashable {
     let workout: Workout
     var exercises: [Exercise]
     
     var id: Int? { workout.id }
     
-    
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id ?? 0)  // If you want to hash just based on ID
+        hasher.combine(id ?? 0)  // hash just based on ID
     }
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(workout)
-//        hasher.combine(exercises)
-//    }
-    
+
     static func == (lhs: WorkoutWithExercises, rhs: WorkoutWithExercises) -> Bool {
         return lhs.workout == rhs.workout && lhs.exercises == rhs.exercises
     }
 }
 
+
+struct LoggedExerciseSet: Codable, Identifiable {
+    var id: Int?
+    var workout_id: Int
+    var setNumber: Int
+    var repsCompleted: Int
+    var weight: Float
+    var createdAt: Date
+    var user_id: UUID
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case workout_id
+        case setNumber = "set_number"
+        case repsCompleted = "reps_completed"
+        case weight
+        case createdAt = "created_at"
+        case user_id
+    }
+}
 
 
 
