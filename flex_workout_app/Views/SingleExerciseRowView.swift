@@ -10,9 +10,18 @@ import SwiftUI
 struct SingleExerciseRowView: View {
     let exercise: Exercise
     let onExerciseUpdate: (Exercise) -> Void  // Add this line
-    @State private var completedSets: Int = 0
+    @State private var completedSets: [Int] = []
     @State private var showingEditSheet = false
 
+
+    init(exercise: Exercise, onExerciseUpdate: @escaping (Exercise) -> Void) {
+        self.exercise = exercise
+        self.onExerciseUpdate = onExerciseUpdate
+        self._completedSets = State(initialValue: Array(repeating: 0, count: exercise.defaultSets))
+    }
+    
+    
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -35,17 +44,18 @@ struct SingleExerciseRowView: View {
                 HStack(spacing: 10) {
                     ForEach(0..<exercise.defaultSets, id: \.self) { index in
                         Button(action: {
-                            if completedSets == index {
-                                completedSets += 1
-                            } else if completedSets == index + 1 {
-                                completedSets -= 1
+                            let index = index
+                            if completedSets[index] == 0 {
+                                completedSets[index] = exercise.defaultReps
+                            } else if completedSets[index] > 0 {
+                                completedSets[index] -= 1
                             }
                         }) {
                             ZStack {
                                 Circle()
-                                    .fill(index < completedSets ? Color.cyan : Color.gray)
+                                    .fill(completedSets[index] > 0 ? Color.cyan : Color.gray)
                                     .frame(width: 60, height: 50)
-                                Text("\(exercise.defaultReps)")
+                                Text("\(completedSets[index] != 0 ? completedSets[index] : exercise.defaultReps)")
                                     .foregroundColor(.white)
                                     .font(.system(size: 18, weight: .bold))
                             }

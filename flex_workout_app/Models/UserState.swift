@@ -14,6 +14,7 @@ class UserState: ObservableObject {
     
     private let supabase = SupabaseClient(supabaseURL: Secrets.projectURL, supabaseKey: Secrets.apiKey)
     
+    @MainActor
     func updateUserId() async throws {
         let user = try await supabase.auth.session.user
 

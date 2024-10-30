@@ -56,6 +56,7 @@ class ProgramViewModel: ObservableObject {
         
     }
     
+    @MainActor
     func updateProgram(_ program: Program, with programName: String) async {
         guard let id = program.id else {
             print("Can't update program")

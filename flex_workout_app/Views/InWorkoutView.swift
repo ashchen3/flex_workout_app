@@ -45,6 +45,7 @@ struct InWorkoutView: View {
             .padding()
             if showTimer {
                 TimerView(timerManager: timerManager, totalTime: 180) {
+                    timerManager.stopTimer()
                     showTimer = false
                     }
                     .transition(.move(edge: .bottom))
