@@ -1,6 +1,6 @@
 # Flex - Personalized Workout Tracking App 🏋️‍♀️
 
-Flex is a powerful, user-friendly workout tracking app designed to make exercise tracking, program creation, and progress monitoring simple and efficient. Whether you're a casual exerciser or a dedicated fitness enthusiast, Flex helps you track your workouts, manage routines, and achieve your fitness goals.
+Flex is a user-friendly workout tracking app designed to make exercise tracking, program creation, and progress monitoring simple and efficient. Whether you're a casual exerciser or a dedicated fitness enthusiast, Flex helps you track your workouts, manage routines, and achieve your fitness goals.
 
 ## Key Features
 
@@ -12,5 +12,5 @@ Flex is a powerful, user-friendly workout tracking app designed to make exercise
 
 ## Tech Stack
 
-- **Frontend**: Swift, SwiftUI for a modern, intuitive UI experience.
+- **Frontend**: Swift, SwiftUI
 - **Backend**: Supabase with PostgreSQL for managing and storing user data, workout logs, programs, and exercises.
