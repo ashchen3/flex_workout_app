@@ -8,11 +8,10 @@
 import Foundation
 import Supabase
 
-class ProgramViewModel: ObservableObject {
+@MainActor class ProgramViewModel: ObservableObject {
     @Published var programName = ""
     @Published var programs = [Program]()
     @Published var selectedProgram: Program?
-
 
     private let supabase = SupabaseClient(supabaseURL: Secrets.projectURL, supabaseKey: Secrets.apiKey)
     
@@ -136,21 +135,5 @@ class ProgramViewModel: ObservableObject {
             print("No selected program found for this user.")
         }
     }
-    
-//    func deselectProgram() async throws {
-//        let user = try await supabase.auth.session.user
-//        
-//        // Update the selectedProgram in the profiles table to null
-//        try await supabase
-//            .from("profiles")
-//            .update(["selectedProgram": nil])
-//            .eq("id", value: user.id)
-//            .execute()
-//        
-//        // Update the local state
-//        await MainActor.run {
-//            self.selectedProgram = nil
-//        }
-//    }
     
 }

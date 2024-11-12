@@ -21,8 +21,8 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .italic()
                     .foregroundColor(.cyan)
-                if let profile = userState.profile, let selectedId = profile.selectedProgram {
-                    Text("Program ID: \(selectedId)")
+                if let profile = userState.profile {
+                    //Text("Program ID: \(selectedId)")
                     List {
                         ForEach(viewModel.workoutsWithExercises) { workoutWithExercises in
                             Button {

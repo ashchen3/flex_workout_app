@@ -48,7 +48,7 @@ class HomeViewModel: ObservableObject {
             .execute()
             .value
         
-        print("Fetching user exercises")
+        print("HomeViewModel: fetchProgramExercises [Exercise]")
         
         return exercisesResponse
         

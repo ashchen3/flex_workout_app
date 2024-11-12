@@ -10,17 +10,22 @@ import SwiftUI
 struct SingleExerciseRowView: View {
     let exercise: Exercise
     let onExerciseUpdate: (Exercise) -> Void  // Add this line
-    @State private var completedSets: [Int] = []
+    let onTimerStart: () -> Void
+    @State private var completedSets: [Int?] = []
     @State private var showingEditSheet = false
+    let onSetsCompleted: (Exercise, [Int?]) -> Void
 
 
-    init(exercise: Exercise, onExerciseUpdate: @escaping (Exercise) -> Void) {
+    init(exercise: Exercise, 
+         onExerciseUpdate: @escaping (Exercise) -> Void,
+         onTimerStart: @escaping () -> Void,
+         onSetsCompleted: @escaping (Exercise, [Int?]) -> Void) {
         self.exercise = exercise
         self.onExerciseUpdate = onExerciseUpdate
-        self._completedSets = State(initialValue: Array(repeating: 0, count: exercise.defaultSets))
+        self.onTimerStart = onTimerStart
+        self.onSetsCompleted = onSetsCompleted
+        self._completedSets = State(initialValue: Array(repeating: nil, count: exercise.defaultSets))
     }
-    
-    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -45,17 +50,25 @@ struct SingleExerciseRowView: View {
                     ForEach(0..<exercise.defaultSets, id: \.self) { index in
                         Button(action: {
                             let index = index
-                            if completedSets[index] == 0 {
+                            if completedSets[index] == nil {
                                 completedSets[index] = exercise.defaultReps
-                            } else if completedSets[index] > 0 {
-                                completedSets[index] -= 1
+                                onTimerStart()
+                            } else if let currentValue = completedSets[index] {
+                                if currentValue > 0 {
+                                    completedSets[index] = currentValue - 1
+                                    onTimerStart()
+                                } else if currentValue == 0 {
+                                    completedSets[index] = nil
+                                }
                             }
+                            onSetsCompleted(exercise, completedSets)
+                            
                         }) {
                             ZStack {
                                 Circle()
-                                    .fill(completedSets[index] > 0 ? Color.cyan : Color.gray)
+                                    .fill(completedSets[index] != nil ? Color.cyan : Color.gray)
                                     .frame(width: 60, height: 50)
-                                Text("\(completedSets[index] != 0 ? completedSets[index] : exercise.defaultReps)")
+                                Text("\(completedSets[index] ?? exercise.defaultReps)")
                                     .foregroundColor(.white)
                                     .font(.system(size: 18, weight: .bold))
                             }
@@ -70,7 +83,10 @@ struct SingleExerciseRowView: View {
         .sheet(isPresented: $showingEditSheet) {
             EditExerciseView(exercise: exercise) { updatedExercise in
                 onExerciseUpdate(updatedExercise)  // Parent callback
-
+                //TODO: Update backend for exercise
+                //LOGGING WILL:
+                // 1. take in the sets and reps as shown in InWorkoutView WE
+                // 2. push those to logged exercises
             }
         }
     }
@@ -86,7 +102,7 @@ struct SingleExerciseRowView_Previews: PreviewProvider {
             defaultReps: 5,
             defaultSets: 5,
             currentWeight: 190
-        )) {_ in }
+        ), onExerciseUpdate: {_ in }, onTimerStart: {}, onSetsCompleted: {_,_ in })
         .previewLayout(.sizeThatFits)
         .padding()
         //.background(Color.black)

@@ -1,10 +1,6 @@
 import SwiftUI
 
 struct TimerView: View {
-//    @State private var timeElapsed = 0
-//    @State private var timer: Timer?
-//    @State private var isRunning = false
-//    @Binding var shouldReset: Bool
 
     @Environment(\.dismiss) private var dismiss
     
@@ -89,23 +85,5 @@ struct TimerView: View {
         return String(format: "%d:%02d", minutes, remainingSeconds)
     }
     
-//    private func startTimer() {
-//        isRunning = true
-//        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-//            timeElapsed += 1
-//        }
-//    }
-//    
-//    private func stopTimer() {
-//        isRunning = false
-//        timer?.invalidate()
-//        timer = nil
-//    }
-//    
-//    private func resetTimer() {
-//        stopTimer()
-//        timeElapsed = 0
-//        startTimer()
-//    }
 }
 

@@ -68,6 +68,7 @@ struct EditExerciseView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
+                        print("Saving exercise: \(updatedExercise.exerciseName)")
                         Task {
                             do {
                                 onSave(updatedExercise)

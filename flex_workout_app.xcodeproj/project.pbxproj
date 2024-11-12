@@ -58,7 +58,6 @@
 		BD923B532C9262AE003C3796 /* InWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B522C9262AE003C3796 /* InWorkoutView.swift */; };
 		BD923B552C9262BB003C3796 /* InWorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B542C9262BB003C3796 /* InWorkoutViewModel.swift */; };
 		BD923B572C936914003C3796 /* SingleExerciseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B562C936914003C3796 /* SingleExerciseRowView.swift */; };
-		BD923B612C93853D003C3796 /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923B602C93853D003C3796 /* DataTypes.swift */; };
 		BD94158D2C9F7581003C5045 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = BD94158C2C9F7581003C5045 /* Auth */; };
 		BD94158F2C9F7581003C5045 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = BD94158E2C9F7581003C5045 /* Functions */; };
 		BD9415912C9F7581003C5045 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = BD9415902C9F7581003C5045 /* PostgREST */; };
@@ -67,7 +66,6 @@
 		BDA66E562CAF19D3001157CF /* ProgramCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA66E552CAF19D3001157CF /* ProgramCard.swift */; };
 		BDA66E582CAF50A2001157CF /* WorkoutsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA66E572CAF50A2001157CF /* WorkoutsViewModel.swift */; };
 		BDABA70C2CC85E8A00172577 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDABA70B2CC85E8A00172577 /* TimerView.swift */; };
-		BDABA70E2CC85EDA00172577 /* MyTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDABA70D2CC85EDA00172577 /* MyTimerView.swift */; };
 		BDCE52752C9E845900EFC859 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE52742C9E845900EFC859 /* EditExerciseView.swift */; };
 		BDCFC9D92CAE02B0003A5190 /* EditableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCFC9D82CAE02B0003A5190 /* EditableTextField.swift */; };
 		BDCFC9DB2CAE069E003A5190 /* ProgramInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCFC9DA2CAE069E003A5190 /* ProgramInfo.swift */; };
@@ -108,11 +106,9 @@
 		BD923B522C9262AE003C3796 /* InWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InWorkoutView.swift; sourceTree = "<group>"; };
 		BD923B542C9262BB003C3796 /* InWorkoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InWorkoutViewModel.swift; sourceTree = "<group>"; };
 		BD923B562C936914003C3796 /* SingleExerciseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleExerciseRowView.swift; sourceTree = "<group>"; };
-		BD923B602C93853D003C3796 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
 		BDA66E552CAF19D3001157CF /* ProgramCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramCard.swift; sourceTree = "<group>"; };
 		BDA66E572CAF50A2001157CF /* WorkoutsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsViewModel.swift; sourceTree = "<group>"; };
 		BDABA70B2CC85E8A00172577 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
-		BDABA70D2CC85EDA00172577 /* MyTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTimerView.swift; sourceTree = "<group>"; };
 		BDCE52742C9E845900EFC859 /* EditExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseView.swift; sourceTree = "<group>"; };
 		BDCFC9D82CAE02B0003A5190 /* EditableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableTextField.swift; sourceTree = "<group>"; };
 		BDCFC9DA2CAE069E003A5190 /* ProgramInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramInfo.swift; sourceTree = "<group>"; };
@@ -171,7 +167,6 @@
 				BDCFC9D82CAE02B0003A5190 /* EditableTextField.swift */,
 				BDA66E552CAF19D3001157CF /* ProgramCard.swift */,
 				BDABA70B2CC85E8A00172577 /* TimerView.swift */,
-				BDABA70D2CC85EDA00172577 /* MyTimerView.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -233,7 +228,6 @@
 		BD923AFF2C921747003C3796 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BD923B602C93853D003C3796 /* DataTypes.swift */,
 				BDF064502CA0EEF200EFEF72 /* TableStructs.swift */,
 				BD7061DD2CA37C1400A7E0E0 /* UserState.swift */,
 				BD0B4DA22CC8DD9B00B4DC09 /* TimerManager.swift */,
@@ -406,7 +400,6 @@
 				BDF27E5E2CA881DA007FCEEF /* WorkoutTemplates.swift in Sources */,
 				BD923AEE2C91EF41003C3796 /* MainView.swift in Sources */,
 				BD923B512C9254AA003C3796 /* WorkoutCardView.swift in Sources */,
-				BDABA70E2CC85EDA00172577 /* MyTimerView.swift in Sources */,
 				BD923B3F2C9226BE003C3796 /* HomeViewModel.swift in Sources */,
 				BDA66E562CAF19D3001157CF /* ProgramCard.swift in Sources */,
 				BD7061E62CA60A2800A7E0E0 /* ExercisesView.swift in Sources */,
@@ -438,7 +431,6 @@
 				BDCE52752C9E845900EFC859 /* EditExerciseView.swift in Sources */,
 				BDCFC9D92CAE02B0003A5190 /* EditableTextField.swift in Sources */,
 				BD7061DE2CA37C1400A7E0E0 /* UserState.swift in Sources */,
-				BD923B612C93853D003C3796 /* DataTypes.swift in Sources */,
 				BD0B4DA32CC8DD9B00B4DC09 /* TimerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

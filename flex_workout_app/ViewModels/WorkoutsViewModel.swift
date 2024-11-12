@@ -15,6 +15,7 @@ class WorkoutsViewModel: ObservableObject {
     private let supabase = SupabaseClient(supabaseURL: Secrets.projectURL, supabaseKey: Secrets.apiKey)
 
     // MARK: WorkoutExercises
+    // Returns a list of WorkoutWithExercises.
     
     @MainActor
     func fetchWorkoutsWithExercises(for programId: Int) async throws {
@@ -26,8 +27,12 @@ class WorkoutsViewModel: ObservableObject {
             workoutsWithExercises.append(WorkoutWithExercises(workout: workout, exercises: exercises))
         }
         
+        print("WorkoutsViewModel: fetch [workoutsWithExercises]")
+        
         self.workoutsWithExercises = workoutsWithExercises
     }
+    
+    
     
     // MARK: CRUD Workouts
     
@@ -155,7 +160,7 @@ class WorkoutsViewModel: ObservableObject {
             .execute()
             .value
         
-        print("Fetching user exercises")
+        //print("WorkoutsViewModel: fetchProgramExercises [Exercise]")
         
         return exercisesResponse
         
@@ -237,10 +242,6 @@ class WorkoutsViewModel: ObservableObject {
             .eq("workout_id", value: workout.id)
             .eq("user_exercise_id", value: exercise.id)
             .execute()
-        
-//        await MainActor.run {
-//            self.exercises.removeAll { $0.id == exercise.id }
-//        }
     }
     
 }

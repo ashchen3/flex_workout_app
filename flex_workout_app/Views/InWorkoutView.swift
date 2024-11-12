@@ -5,16 +5,25 @@
 //  Created by Alex Chen on 9/11/24.
 //
 
+
+
+
 import SwiftUI
 
 struct InWorkoutView: View {
-    //@StateObject var viewModel: InWorkoutViewModel
+    //@StateObject var viewModel: InWorkoutViewModel    
+    //@EnvironmentObject var timerManager: TimerManager
+
+//    @StateObject var viewModel: ExerciseViewModel
     
     @StateObject private var timerManager = TimerManager()
     @State private var showTimer = false
-
     
-    let workoutWE: WorkoutWithExercises
+    @State var workoutWE: WorkoutWithExercises
+    
+    @State private var showLog = false
+    @State private var exerciseCompletedSets: [Int: [Int?]] = [:]
+    
     
     var body: some View {
         VStack {
@@ -22,40 +31,94 @@ struct InWorkoutView: View {
             Text(workoutWE.workout.workoutName)
                 .bold()
                 .font(.title2)
-
+            
+            
             List {
-                ForEach(workoutWE.exercises) {
-                    exercise in SingleExerciseRowView(exercise: exercise) {
-                        updatedExercise in
+                ForEach(workoutWE.exercises) { exercise in
+                    SingleExerciseRowView(
+                        exercise: exercise,
+                        onExerciseUpdate: { updatedExercise in
                             
                             //TODO: Handle Update to exercise
-                            //TODO: make another callback in SingleExerciseRowView that starts the timer
-                    }
+                            //Update workoutWE exercise
+                            
+                            if let exerciseIndex = workoutWE.exercises.firstIndex(where: { $0.id == updatedExercise.id }) {
+                                print(workoutWE.exercises[exerciseIndex].exerciseName)
+                                
+                                workoutWE.exercises[exerciseIndex] = updatedExercise
+                                
+                            }
+                            //PROBLEM: if updating sets, this is not passed to the SingleExerciseRowView, so the app crashes
+                            //Update backend exercise weight
+                                    
+                        },
+                        onTimerStart: {
+                            startTimer()
+                        },
+                        onSetsCompleted: { exercise, sets in
+                            exerciseCompletedSets[exercise.id!] = sets
+                        }
+                    )
                 }
             }
             .listStyle(PlainListStyle())
             
-            Button("Start Timer") {
-                if showTimer {
-                    timerManager.resetTimer()
-                } else {
-                    showTimer = true
-                }
+            
+            Button("Log Workout") {
+                logWorkout()
+                // Add your log workout functionality here
             }
+            .foregroundColor(.white)
             .padding()
+            .background(Color.cyan)
+            .cornerRadius(8)
+            .bold()
+            .padding(.bottom)
+            
+            
+            
+            
+            
             if showTimer {
                 TimerView(timerManager: timerManager, totalTime: 180) {
                     timerManager.stopTimer()
                     showTimer = false
-                    }
-                    .transition(.move(edge: .bottom))
-                    .animation(.spring(), value: showTimer)
-                    .padding(.bottom)
+                }
+                .animation(.spring(), value: showTimer)
+                .padding(.bottom)
             }
         }
         
-            
+        
+        
+        
     }
+    func startTimer() -> Void {
+        if showTimer {
+            timerManager.resetTimer()
+        } else {
+            showTimer = true
+        }
+    }
+    
+    func generateWorkoutLog() -> String {
+        var log = ""
+        for exercise in workoutWE.exercises {
+            let sets = exerciseCompletedSets[exercise.id!] ?? Array(repeating: nil, count: exercise.defaultSets)
+            log += "\(exercise.exerciseName) (\(String(format: "%.1f", exercise.currentWeight ?? exercise.defaultWeight))lb):\n"
+            log += "\(formatSets(sets))\n\n"
+        }
+        return log
+    }
+    
+    func formatSets(_ sets: [Int?]) -> String {
+        return "[\(sets.map { $0 == nil ? "nil" : "\($0!)" }.joined(separator: ", "))]"
+    }
+    func logWorkout() {
+        //showLog = true
+        print(generateWorkoutLog())
+    }
+    
 }
 
 
