@@ -20,6 +20,8 @@
 		BD7061E22CA609E300A7E0E0 /* ProgramTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7061E12CA609E300A7E0E0 /* ProgramTabView.swift */; };
 		BD7061E42CA60A1D00A7E0E0 /* WorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7061E32CA60A1D00A7E0E0 /* WorkoutsView.swift */; };
 		BD7061E62CA60A2800A7E0E0 /* ExercisesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7061E52CA60A2800A7E0E0 /* ExercisesView.swift */; };
+		BD7CE1A82CE43CF10039DADB /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7CE1A72CE43CF10039DADB /* HistoryView.swift */; };
+		BD7CE1AA2CE43DB50039DADB /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7CE1A92CE43DB50039DADB /* HistoryViewModel.swift */; };
 		BD923AEC2C91EF41003C3796 /* flex_workout_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923AEB2C91EF41003C3796 /* flex_workout_appApp.swift */; };
 		BD923AEE2C91EF41003C3796 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD923AED2C91EF41003C3796 /* MainView.swift */; };
 		BD923AF02C91EF42003C3796 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD923AEF2C91EF42003C3796 /* Assets.xcassets */; };
@@ -90,6 +92,8 @@
 		BD7061E12CA609E300A7E0E0 /* ProgramTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramTabView.swift; sourceTree = "<group>"; };
 		BD7061E32CA60A1D00A7E0E0 /* WorkoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsView.swift; sourceTree = "<group>"; };
 		BD7061E52CA60A2800A7E0E0 /* ExercisesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisesView.swift; sourceTree = "<group>"; };
+		BD7CE1A72CE43CF10039DADB /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		BD7CE1A92CE43DB50039DADB /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		BD923AE82C91EF41003C3796 /* flex_workout_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flex_workout_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD923AEB2C91EF41003C3796 /* flex_workout_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flex_workout_appApp.swift; sourceTree = "<group>"; };
 		BD923AED2C91EF41003C3796 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -245,6 +249,7 @@
 				BD183D512CACAF4500C5A3DA /* ProgramViewModel.swift */,
 				BDA66E572CAF50A2001157CF /* WorkoutsViewModel.swift */,
 				BD62C3682CBAD2DD00564014 /* ExerciseViewModel.swift */,
+				BD7CE1A92CE43DB50039DADB /* HistoryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -257,6 +262,7 @@
 				BD923B382C9222F7003C3796 /* HomeView.swift */,
 				BD923B402C9226D8003C3796 /* ProfileView.swift */,
 				BD923B522C9262AE003C3796 /* InWorkoutView.swift */,
+				BD7CE1A72CE43CF10039DADB /* HistoryView.swift */,
 				BD7061E12CA609E300A7E0E0 /* ProgramTabView.swift */,
 				BD7061EB2CA6150B00A7E0E0 /* TabViews */,
 				BD183D532CACB28F00C5A3DA /* Components */,
@@ -399,7 +405,9 @@
 				BD923B492C922F2F003C3796 /* RegisterView.swift in Sources */,
 				BDF27E5E2CA881DA007FCEEF /* WorkoutTemplates.swift in Sources */,
 				BD923AEE2C91EF41003C3796 /* MainView.swift in Sources */,
+				BD7CE1A82CE43CF10039DADB /* HistoryView.swift in Sources */,
 				BD923B512C9254AA003C3796 /* WorkoutCardView.swift in Sources */,
+				BD7CE1AA2CE43DB50039DADB /* HistoryViewModel.swift in Sources */,
 				BD923B3F2C9226BE003C3796 /* HomeViewModel.swift in Sources */,
 				BDA66E562CAF19D3001157CF /* ProgramCard.swift in Sources */,
 				BD7061E62CA60A2800A7E0E0 /* ExercisesView.swift in Sources */,

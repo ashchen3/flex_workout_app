@@ -71,7 +71,7 @@ struct Exercise: Identifiable, Codable, Hashable {
     var id: Int? //To be populated by Supabase
     var user_id: UUID?
     var exerciseName: String
-    var defaultWeight: Double
+    var defaultWeight: Float
     var defaultReps: Int
     var defaultSets: Int
     var increment: Float?
@@ -140,9 +140,11 @@ struct WorkoutWithExercises: Identifiable, Hashable {
 }
 
 
-struct LoggedExerciseSet: Codable, Identifiable {
+struct LoggedExerciseSet: Codable, Identifiable, Equatable {
     var id: Int?
-    var workout_id: Int
+    var program_id: Int?
+    var user_exercise_id: Int
+    var user_exercise_name: String?
     var setNumber: Int
     var repsCompleted: Int
     var weight: Float
@@ -151,7 +153,9 @@ struct LoggedExerciseSet: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case workout_id
+        case program_id
+        case user_exercise_id
+        case user_exercise_name
         case setNumber = "set_number"
         case repsCompleted = "reps_completed"
         case weight

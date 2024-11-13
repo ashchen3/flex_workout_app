@@ -38,6 +38,7 @@ struct HomeView: View {
             }
             .navigationDestination(for: WorkoutWithExercises.self) { workoutWithExercises in
                 InWorkoutView(workoutWE: workoutWithExercises)
+                    .navigationTitle(workoutWithExercises.workout.workoutName)
             }
             .task {
                 try? await userState.fetchProfile()

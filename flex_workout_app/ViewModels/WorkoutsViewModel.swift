@@ -170,6 +170,7 @@ class WorkoutsViewModel: ObservableObject {
         let response: [Exercise] = try await supabase
             .from("exercises")
             .select("*")
+            .order("exercise_name", ascending: true)
             .execute()
             .value
         return response

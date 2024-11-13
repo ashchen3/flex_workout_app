@@ -20,9 +20,13 @@ struct MainView: View {
                         .tabItem {
                             Label("Home", systemImage: "house")
                         }
+                    HistoryView()
+                        .tabItem {
+                            Label("History", systemImage: "chart.xyaxis.line")
+                        }
                     ProgramTabView()
                         .tabItem {
-                            Label("Program", systemImage: "chart.xyaxis.line")
+                            Label("Program", systemImage: "flame")
                         }
                     ProfileView()
                         .tabItem {

@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct InWorkoutView: View {
-    //@StateObject var viewModel: InWorkoutViewModel    
+    @StateObject var viewModel = InWorkoutViewModel()
     //@EnvironmentObject var timerManager: TimerManager
 
 //    @StateObject var viewModel: ExerciseViewModel
@@ -22,15 +22,29 @@ struct InWorkoutView: View {
     @State var workoutWE: WorkoutWithExercises
     
     @State private var showLog = false
+    @State private var logWO = false
     @State private var exerciseCompletedSets: [Int: [Int?]] = [:]
     
     
     var body: some View {
         VStack {
-            // TODO: Make the workout changeable based on the top selection
-            Text(workoutWE.workout.workoutName)
-                .bold()
-                .font(.title2)
+    
+            HStack {
+                Spacer() // This will help push the text to the center
+                
+                Button("Log Workout") {
+                    if showLog {
+                        logWorkout()
+                    }
+                }
+                .font(.body)
+                .foregroundColor(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(showLog ? Color.cyan : Color.gray)
+                .cornerRadius(8)
+            }
+            .padding(.horizontal)
             
             
             List {
@@ -42,18 +56,19 @@ struct InWorkoutView: View {
                             //TODO: Handle Update to exercise
                             //Update workoutWE exercise
                             
-                            if let exerciseIndex = workoutWE.exercises.firstIndex(where: { $0.id == updatedExercise.id }) {
-                                print(workoutWE.exercises[exerciseIndex].exerciseName)
-                                
-                                workoutWE.exercises[exerciseIndex] = updatedExercise
-                                
-                            }
+//                            if let exerciseIndex = workoutWE.exercises.firstIndex(where: { $0.id == updatedExercise.id }) {
+//                                print(workoutWE.exercises[exerciseIndex].exerciseName)
+//                                
+//                                workoutWE.exercises[exerciseIndex] = updatedExercise
+//                                
+//                            }
                             //PROBLEM: if updating sets, this is not passed to the SingleExerciseRowView, so the app crashes
                             //Update backend exercise weight
                                     
                         },
                         onTimerStart: {
                             startTimer()
+                            showLog = true
                         },
                         onSetsCompleted: { exercise, sets in
                             exerciseCompletedSets[exercise.id!] = sets
@@ -62,22 +77,6 @@ struct InWorkoutView: View {
                 }
             }
             .listStyle(PlainListStyle())
-            
-            
-            Button("Log Workout") {
-                logWorkout()
-                // Add your log workout functionality here
-            }
-            .foregroundColor(.white)
-            .padding()
-            .background(Color.cyan)
-            .cornerRadius(8)
-            .bold()
-            .padding(.bottom)
-            
-            
-            
-            
             
             if showTimer {
                 TimerView(timerManager: timerManager, totalTime: 180) {
@@ -88,9 +87,11 @@ struct InWorkoutView: View {
                 .padding(.bottom)
             }
         }
-        
-        
-        
+        .alert("Workout Log", isPresented: $logWO) {
+            Button("OK", role: .cancel) { }
+            } message: {
+                Text(generateWorkoutLog())
+            }
         
     }
     func startTimer() -> Void {
@@ -115,7 +116,16 @@ struct InWorkoutView: View {
         return "[\(sets.map { $0 == nil ? "nil" : "\($0!)" }.joined(separator: ", "))]"
     }
     func logWorkout() {
-        //showLog = true
+        logWO = true
+        Task {
+            do {
+                try await viewModel.logCompletedSets(exerciseCompletedSets: exerciseCompletedSets)
+                print(generateWorkoutLog())
+            } catch {
+                print("Error logging workout: \(error)")
+            }
+        }
+        
         print(generateWorkoutLog())
     }
     
