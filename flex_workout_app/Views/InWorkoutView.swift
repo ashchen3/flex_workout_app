@@ -12,10 +12,7 @@ import SwiftUI
 
 struct InWorkoutView: View {
     @StateObject var viewModel = InWorkoutViewModel()
-    //@EnvironmentObject var timerManager: TimerManager
 
-//    @StateObject var viewModel: ExerciseViewModel
-    
     @StateObject private var timerManager = TimerManager()
     @State private var showTimer = false
     
@@ -25,6 +22,8 @@ struct InWorkoutView: View {
     @State private var logWO = false
     @State private var exerciseCompletedSets: [Int: [Int?]] = [:]
     
+    @Environment(\.dismiss) private var dismiss
+
     
     var body: some View {
         VStack {
@@ -34,7 +33,7 @@ struct InWorkoutView: View {
                 
                 Button("Log Workout") {
                     if showLog {
-                        logWorkout()
+                        logWO = true
                     }
                 }
                 .font(.body)
@@ -52,19 +51,7 @@ struct InWorkoutView: View {
                     SingleExerciseRowView(
                         exercise: exercise,
                         onExerciseUpdate: { updatedExercise in
-                            
                             //TODO: Handle Update to exercise
-                            //Update workoutWE exercise
-                            
-//                            if let exerciseIndex = workoutWE.exercises.firstIndex(where: { $0.id == updatedExercise.id }) {
-//                                print(workoutWE.exercises[exerciseIndex].exerciseName)
-//                                
-//                                workoutWE.exercises[exerciseIndex] = updatedExercise
-//                                
-//                            }
-                            //PROBLEM: if updating sets, this is not passed to the SingleExerciseRowView, so the app crashes
-                            //Update backend exercise weight
-                                    
                         },
                         onTimerStart: {
                             startTimer()
@@ -87,11 +74,16 @@ struct InWorkoutView: View {
                 .padding(.bottom)
             }
         }
-        .alert("Workout Log", isPresented: $logWO) {
-            Button("OK", role: .cancel) { }
-            } message: {
-                Text(generateWorkoutLog())
-            }
+        .alert(isPresented: $logWO) {
+            Alert(
+                title: Text("Log Workout?"),
+                message: Text(generateWorkoutLog()),
+                primaryButton: .default(Text("Log")) { logWorkout()},
+                secondaryButton: .cancel() {
+                    logWO = false
+                }
+            )
+        }
         
     }
     func startTimer() -> Void {
@@ -113,14 +105,14 @@ struct InWorkoutView: View {
     }
     
     func formatSets(_ sets: [Int?]) -> String {
-        return "[\(sets.map { $0 == nil ? "nil" : "\($0!)" }.joined(separator: ", "))]"
+        return "[\(sets.map { $0 == nil ? "None" : "\($0!)" }.joined(separator: ", "))]"
     }
     func logWorkout() {
-        logWO = true
         Task {
             do {
                 try await viewModel.logCompletedSets(exerciseCompletedSets: exerciseCompletedSets)
                 print(generateWorkoutLog())
+                dismiss()
             } catch {
                 print("Error logging workout: \(error)")
             }

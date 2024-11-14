@@ -21,19 +21,16 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .italic()
                     .foregroundColor(.cyan)
-                if let profile = userState.profile {
-                    //Text("Program ID: \(selectedId)")
-                    List {
-                        ForEach(viewModel.workoutsWithExercises) { workoutWithExercises in
-                            Button {
-                                path.append(workoutWithExercises)
-                            } label: {
-                                WorkoutCardView(workoutWithExercises: workoutWithExercises, isTopCard: true)
-                            }
+                List {
+                    ForEach(viewModel.workoutsWithExercises) { workoutWithExercises in
+                        Button {
+                            path.append(workoutWithExercises)
+                        } label: {
+                            WorkoutCardView(workoutWithExercises: workoutWithExercises, isTopCard: true)
                         }
                     }
-                    .listStyle(PlainListStyle())
                 }
+                .listStyle(PlainListStyle())
                 Spacer()
             }
             .navigationDestination(for: WorkoutWithExercises.self) { workoutWithExercises in

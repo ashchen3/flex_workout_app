@@ -12,22 +12,6 @@ import Supabase
 class InWorkoutViewModel: ObservableObject {
 
     private let supabase = SupabaseClient(supabaseURL: Secrets.projectURL, supabaseKey: Secrets.apiKey)
-
-//    exerciseCompletedSets = [
-//        1: [5, 5, nil, 4, 5],     // Exercise ID 1 (maybe Squat)
-//        2: [8, 8, 8, nil, nil],   // Exercise ID 2 (maybe Bench Press)
-//        3: [12, 10, nil, nil, nil] // Exercise ID 3 (maybe Deadlift)
-//    ]
-    
-//    struct LoggedExerciseSet: Codable, Identifiable {
-//        var id: Int?
-//        var program_id: Int?
-//        var user_exercise_id: Int
-//        var setNumber: Int
-//        var repsCompleted: Int
-//        var weight: Float
-//        var createdAt: Date
-//        var user_id: UUID
     
     func logCompletedSets(exerciseCompletedSets: [Int: [Int?]]) async throws {
         let user = try await supabase.auth.session.user
