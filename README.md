@@ -8,7 +8,7 @@ Flex is a user-friendly workout tracking app designed to make exercise tracking,
 
 
 
-[Youtube Link]([https://link-url-here.org](https://www.youtube.com/watch?v=ClFgtlnZGmQ))
+([Youtube Link](https://www.youtube.com/watch?v=ClFgtlnZGmQ))
 
 
 
