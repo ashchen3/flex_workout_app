@@ -2,6 +2,14 @@
 
 Flex is a user-friendly workout tracking app designed to make exercise tracking, program creation, and progress monitoring simple and efficient. Whether you're a casual exerciser or a dedicated fitness enthusiast, Flex helps you track your workouts, manage routines, and achieve your fitness goals.
 
+
+## Demo Video
+[![Flex Demo]([https://i.sstatic.net/q3ceS.png](https://ibb.co/9YHR0R0))]([https://youtu.be/StTqXEQ2l-Y?t=35s "Everything Is AWESOME"](https://www.youtube.com/watch?v=ClFgtlnZGmQ))
+[Youtube Link]([https://link-url-here.org](https://www.youtube.com/watch?v=ClFgtlnZGmQ))
+
+
+
+
 ## Key Features
 
 - **Custom Program and Workout Creation**: Design personalized workout programs tailored to your goals, and create exercises with details on sets, reps, and weights.
