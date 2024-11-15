@@ -16,6 +16,7 @@ Flex is a user-friendly workout tracking app designed to make exercise tracking,
 ## Key Features
 
 - **Custom Program and Workout Creation**: Design personalized workout programs tailored to your goals, and create exercises with details on sets, reps, and weights.
+- **Progressive Overload**: Set exercises to increment after completion, to automatically update exercise weights for the next workout.
 - **Workout Logging and Progress Tracking**: Easily log workout sessions, record the details, and track progress over time.
 - **Timed Rest Periods**: Use built-in rest timers between sets to stay on track and maintain optimal rest intervals.
 - **Anonymous Login for Guest Accounts**: Start exploring the app’s features without creating an account—your workout data is saved even in guest mode.
