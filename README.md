@@ -4,7 +4,10 @@ Flex is a user-friendly workout tracking app designed to make exercise tracking,
 
 
 ## Demo Video
-[![Flex Demo]([https://i.sstatic.net/q3ceS.png](https://ibb.co/9YHR0R0))]([https://youtu.be/StTqXEQ2l-Y?t=35s "Everything Is AWESOME"](https://www.youtube.com/watch?v=ClFgtlnZGmQ))
+[![Flex Demo](https://imgur.com/a/Yj3LTXv)](https://www.youtube.com/watch?v=ClFgtlnZGmQ "Flex Demo")
+
+
+
 [Youtube Link]([https://link-url-here.org](https://www.youtube.com/watch?v=ClFgtlnZGmQ))
 
 
